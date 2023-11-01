@@ -6,7 +6,13 @@
     <title>Document</title>
 </head>
 <body>
-    {% start block %}
+    <nav>
+        <ul>
+            <li><a href="{{url_for('profile')}}">Profile</a></li>
+        </ul>
+    </nav>
+    {% block content %}
     {% endblock %}
+
 </body>
 </html>
