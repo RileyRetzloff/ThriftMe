@@ -1,12 +1,6 @@
-from flask import Flask,render_template, request,redirect,abort,url_for
+from app import create_app
 
-app = Flask(__name__)
+app = create_app()
 
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-@app.route('/profile', methods=['POST','GET'])
-def profile():
-    return render_template('profile.html')
+if __name__ == '__main__':
+    app.run()
