@@ -15,7 +15,7 @@
 body {
     display: grid;
     grid-template-columns: 200px 1fr;
-    grid-template-rows: 60px minmax(calc(100vh - 80px), 1fr) 20px;
+    grid-template-rows: 60px minmax(calc(100vh - 90px), 1fr) 30px;
     grid-template-areas: 
         "header header"
         "sidebar main"
@@ -39,15 +39,23 @@ body {
     flex-direction: column;
 }
 
+/* Expanded sidebar styling */
 .sidebar {
     height: 100%;
     background-color: var(--secondary-color-light);
+    transition: width 0.5s ease;
+}
+
+/* Collapsed sidebar styling */
+.sidebar.collapsed {
+    width: 0;
+    overflow: hidden;
 }
 
 /* Sidebar toggle button */
 .sidebar-toggle {
     position: absolute;
-    left: 200px; /* Adjust as needed */
+    left: 185px; /* Adjust as needed */
     top: 50%;
     transform: translateY(-50%);
     border: none;
@@ -55,12 +63,16 @@ body {
     color: var(--text-light);
     border-radius: 12px;
     padding: 10px;
+    transition: background-color 0.2s ease;
 }
 
-/* Collapsed sidebar styling */
-.sidebar.collapsed {
-    width: 0;
-    overflow: hidden;
+/* Collapsed sidebar toggle styling */
+.sidebar-toggle.collapsed {
+    left: -15px
+}
+
+.sidebar-toggle:hover {
+    background-color: var(--secondary-color-dark);
 }
 
 /* Custom styling for sidebar nav links */
@@ -77,6 +89,7 @@ body {
 /* MAIN CONTENT */
 .main-wrapper {
     grid-area: main;
+    padding: 2em;
 }
 
 /* FOOTER */

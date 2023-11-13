@@ -23,7 +23,7 @@
     <!-- Sidebar Wrapper -->
     <div class="sidebar-wrapper">
         <!-- Sidebar toggle button -->
-        <button id="sidebar-toggle" class="sidebar-toggle btn btn-primary">&lt;</button>
+        <button id="sidebar-toggle" class="sidebar-toggle">&lt;</button>
         
         <!-- Sidebar -->
         <nav id="sidebar" class="sidebar">
@@ -60,19 +60,15 @@
         
             toggleButton.addEventListener('click', function() {
                 sidebar.classList.toggle('collapsed');
+                toggleButton.classList.toggle('collapsed');
+                if (toggleButton.textContent === '>') {
+                    toggleButton.textContent = '<';
+                } else {
+                    toggleButton.textContent = '>';
+                }
             });
         });
     </script>
-        
-    <!-- <script>
-        document.querySelector('.sidebar-toggle').addEventListener('click', function() {
-            const sidebar = document.querySelector('.sidebar');
-            const isCollapsed = sidebar.style.width === '0px';
-            sidebar.style.width = isCollapsed ? '200px' : '0px'; // Toggle width between 0px and 200px
-            this.textContent = isCollapsed ? '>' : '<'; // Change button text
-            document.querySelector('.main-content-wrapper').style.marginLeft = isCollapsed ? '200px' : '0';
-        });
-    </script> -->
 
 </body>
 </html>
