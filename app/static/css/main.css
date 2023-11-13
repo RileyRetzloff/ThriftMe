@@ -15,7 +15,7 @@
 body {
     display: grid;
     grid-template-columns: 200px 1fr;
-    grid-template-rows: 60px minmax(calc(100vh - 90px), 1fr) 30px;
+    grid-template-rows: 80px minmax(calc(100vh - 110px), 1fr) 30px;
     grid-template-areas: 
         "header header"
         "sidebar main"
@@ -29,6 +29,19 @@ body {
     background-color: var(--primary-color);
     height: auto;
     font-family: "Young Serif", serif;
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    width: 65px;
+    margin-left: .5em;
+    border: var(--background-gray-light) 3px solid;
+    border-radius: 100%;
+}
+
+.header-text {
+    color: var(--text-dark);
 }
 
 /* SIDEBAR */
@@ -68,7 +81,7 @@ body {
 
 /* Collapsed sidebar toggle styling */
 .sidebar-toggle.collapsed {
-    left: -15px
+    left: -10px
 }
 
 .sidebar-toggle:hover {
@@ -83,13 +96,18 @@ body {
 
 .sidebar .nav-item.nav-link:hover {
     background-color: var(--secondary-color-dark);
-    font-weight: 600;
+    text-decoration: underline;
 }
 
 /* MAIN CONTENT */
 .main-wrapper {
     grid-area: main;
-    padding: 2em;
+    padding-left: 2em;
+}
+
+/* Fill horizontal space when sidebar is collapsed */
+.main-wrapper-full {
+    grid-column: 1 / -1;
 }
 
 /* FOOTER */

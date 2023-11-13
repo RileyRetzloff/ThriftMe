@@ -15,9 +15,8 @@
 <body>
     <!-- Header Wrapper -->
     <div class="header-wrapper">
-        <header>
-            Test
-        </header>
+        <a href="#"><img src="../static/images/ThriftMe_logo.png" alt="ThriftMe logo" class="header-logo"></a>
+        <a href="#"><h1 class="ml-3 mt-3 header-text">ThriftMe</h1></a>
     </div>
 
     <!-- Sidebar Wrapper -->
@@ -27,7 +26,7 @@
         
         <!-- Sidebar -->
         <nav id="sidebar" class="sidebar">
-            <ul class="list-unstyled">
+            <ul class="list-unstyled mt-5">
                 <li><a href="#" class="nav-item nav-link h5">Home</a></li>
                 <li><a href="#" class="nav-item nav-link h5">Marketplace</a></li>
                 <li><a href="#" class="nav-item nav-link h5">Community</a></li>
@@ -40,7 +39,7 @@
     </div>
 
     <!-- Main Wrapper -->
-    <div class="main-wrapper">
+    <div class="main-wrapper mt-5">
         {% block content %}
         {% endblock %}
     </div>
@@ -57,6 +56,7 @@
         document.addEventListener('DOMContentLoaded', (event) => {
             const toggleButton = document.getElementById('sidebar-toggle');
             const sidebar = document.getElementById('sidebar');
+            const mainWrapper = document.querySelector('.main-wrapper');
         
             toggleButton.addEventListener('click', function() {
                 sidebar.classList.toggle('collapsed');
@@ -65,6 +65,11 @@
                     toggleButton.textContent = '<';
                 } else {
                     toggleButton.textContent = '>';
+                }
+                if (sidebar.classList.contains('collapsed')) {
+                    mainWrapper.classList.add('main-wrapper-full');
+                } else {
+                    mainWrapper.classList.remove('main-wrapper-full');
                 }
             });
         });
