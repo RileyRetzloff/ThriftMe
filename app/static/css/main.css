@@ -1,5 +1,6 @@
-/* Variables */
+/* VARIABLES */
 :root {
+    /* Colors */
     --primary-color: #C8553D;
     --secondary-color-light: #588B8B;
     --secondary-color-dark: #297373;
@@ -10,10 +11,11 @@
 }
 
 
-/* Page structure */
+/* PAGE STRUCTURE */
 body {
     display: grid;
-    grid-template-columns: 200px auto;
+    grid-template-columns: 200px 1fr;
+    grid-template-rows: 80px minmax(calc(100vh - 110px), 1fr) 30px;
     grid-template-areas: 
         "header header"
         "sidebar main"
@@ -21,25 +23,52 @@ body {
     font-family: "Signika Negative", sans-serif;
 }
 
-.main-content-wrapper {
-    transition: margin-left 0.3s ease;
+/* HEADER */
+.header-wrapper {
+    grid-area: header;
+    background-color: var(--primary-color);
+    height: auto;
+    font-family: "Young Serif", serif;
+    display: flex;
+    align-items: center;
 }
 
-/* Sidebar Styles */
+.header-logo {
+    width: 65px;
+    margin-left: .5em;
+    border: var(--background-gray-light) 3px solid;
+    border-radius: 100%;
+}
+
+.header-text {
+    color: var(--text-dark);
+}
+
+/* SIDEBAR */
+.sidebar-wrapper {
+    font-family: "Young Serif", serif;
+    grid-area: sidebar;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Expanded sidebar styling */
 .sidebar {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 200px;
-    overflow-y: auto;
+    height: 100%;
     background-color: var(--secondary-color-light);
+    transition: width 0.5s ease;
 }
 
-/* Sidebar Toggle Button */
+/* Collapsed sidebar styling */
+.sidebar.collapsed {
+    width: 0;
+    overflow: hidden;
+}
+
+/* Sidebar toggle button */
 .sidebar-toggle {
     position: absolute;
-    left: 200px; /* Adjust as needed */
+    left: 185px; /* Adjust as needed */
     top: 50%;
     transform: translateY(-50%);
     border: none;
@@ -47,9 +76,19 @@ body {
     color: var(--text-light);
     border-radius: 12px;
     padding: 10px;
+    transition: background-color 0.2s ease;
 }
 
-/* Custom Styling for Sidebar Nav Links */
+/* Collapsed sidebar toggle styling */
+.sidebar-toggle.collapsed {
+    left: -10px
+}
+
+.sidebar-toggle:hover {
+    background-color: var(--secondary-color-dark);
+}
+
+/* Custom styling for sidebar nav links */
 .sidebar .nav-item.nav-link {
     transition: background-color 0.2s ease;
     color: var(--text-light);
@@ -57,5 +96,22 @@ body {
 
 .sidebar .nav-item.nav-link:hover {
     background-color: var(--secondary-color-dark);
-    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* MAIN CONTENT */
+.main-wrapper {
+    grid-area: main;
+    padding-left: 2em;
+}
+
+/* Fill horizontal space when sidebar is collapsed */
+.main-wrapper-full {
+    grid-column: 1 / -1;
+}
+
+/* FOOTER */
+.footer-wrapper {
+    grid-area: footer;
+    background-color: var(--primary-color);
 }

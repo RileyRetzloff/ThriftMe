@@ -13,15 +13,20 @@
     <link rel="stylesheet" href="../static/css/main.css">
 </head>
 <body>
-    <header>       
-    </header>
+    <!-- Header Wrapper -->
+    <div class="header-wrapper">
+        <a href="#"><img src="../static/images/ThriftMe_logo.png" alt="ThriftMe logo" class="header-logo"></a>
+        <a href="#"><h1 class="ml-3 mt-3 header-text">ThriftMe</h1></a>
+    </div>
+
+    <!-- Sidebar Wrapper -->
     <div class="sidebar-wrapper">
         <!-- Sidebar toggle button -->
-        <button class="sidebar-toggle">&lt;</button>
+        <button id="sidebar-toggle" class="sidebar-toggle">&lt;</button>
         
         <!-- Sidebar -->
-        <nav class="sidebar">
-            <ul class="list-unstyled components">
+        <nav id="sidebar" class="sidebar">
+            <ul class="list-unstyled mt-5">
                 <li><a href="#" class="nav-item nav-link h5">Home</a></li>
                 <li><a href="#" class="nav-item nav-link h5">Marketplace</a></li>
                 <li><a href="#" class="nav-item nav-link h5">Community</a></li>
@@ -32,26 +37,43 @@
             </ul>
         </nav>
     </div>
-    <div class="main-content-wrapper">
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper mt-5">
         {% block content %}
         {% endblock %}
     </div>
 
-    <!-- SCRIPTS -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <!-- Footer Wrapper -->
+    <div class="footer-wrapper">
+        <footer>
+            Test
+        </footer>
+    </div>
 
     <!-- SIDEBAR TOGGLE SCRIPT -->
     <script>
-        document.querySelector('.sidebar-toggle').addEventListener('click', function() {
-            const sidebar = document.querySelector('.sidebar');
-            const isCollapsed = sidebar.style.width === '0px';
-            sidebar.style.width = isCollapsed ? '200px' : '0px'; // Toggle width between 0px and 200px
-            this.textContent = isCollapsed ? '>' : '<'; // Change button text
-            document.querySelector('.main-content-wrapper').style.marginLeft = isCollapsed ? '200px' : '0';
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const toggleButton = document.getElementById('sidebar-toggle');
+            const sidebar = document.getElementById('sidebar');
+            const mainWrapper = document.querySelector('.main-wrapper');
+        
+            toggleButton.addEventListener('click', function() {
+                sidebar.classList.toggle('collapsed');
+                toggleButton.classList.toggle('collapsed');
+                if (toggleButton.textContent === '>') {
+                    toggleButton.textContent = '<';
+                } else {
+                    toggleButton.textContent = '>';
+                }
+                if (sidebar.classList.contains('collapsed')) {
+                    mainWrapper.classList.add('main-wrapper-full');
+                } else {
+                    mainWrapper.classList.remove('main-wrapper-full');
+                }
+            });
         });
-    </script>    
+    </script>
 
 </body>
 </html>
