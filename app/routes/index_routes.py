@@ -1,7 +1,9 @@
 from flask import Blueprint, render_template, request, redirect, url_for
 
+# Create Blueprint
 index = Blueprint('index', __name__)
 
-index.route('/index')
-def index():
+# Define main index route
+@index.route('/')
+def home():
     return render_template('index.html')
