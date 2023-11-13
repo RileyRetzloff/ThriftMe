@@ -1,0 +1,61 @@
+/* Variables */
+:root {
+    --primary-color: #C8553D;
+    --secondary-color-light: #588B8B;
+    --secondary-color-dark: #297373;
+    --text-dark: #39393A;
+    --text-light: #E6E6E6;
+    --background-gray-light: #E6E6E6;
+    --background-gray-dark: #D9D9D9;
+}
+
+
+/* Page structure */
+body {
+    display: grid;
+    grid-template-columns: 200px auto;
+    grid-template-areas: 
+        "header header"
+        "sidebar main"
+        "footer footer";
+    font-family: "Signika Negative", sans-serif;
+}
+
+.main-content-wrapper {
+    transition: margin-left 0.3s ease;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    overflow-y: auto;
+    background-color: var(--secondary-color-light);
+}
+
+/* Sidebar Toggle Button */
+.sidebar-toggle {
+    position: absolute;
+    left: 200px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background-color: var(--primary-color);
+    color: var(--text-light);
+    border-radius: 12px;
+    padding: 10px;
+}
+
+/* Custom Styling for Sidebar Nav Links */
+.sidebar .nav-item.nav-link {
+    transition: background-color 0.2s ease;
+    color: var(--text-light);
+}
+
+.sidebar .nav-item.nav-link:hover {
+    background-color: var(--secondary-color-dark);
+    font-weight: 600;
+}
