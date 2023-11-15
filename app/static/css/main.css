@@ -119,7 +119,3 @@ body {
     grid-area: footer;
     background-color: var(--primary-color);
 }
-
-body::-webkit-scrollbar {
-    width: 0px;
-  }
