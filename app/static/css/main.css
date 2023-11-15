@@ -8,6 +8,8 @@
     --text-light: #E6E6E6;
     --background-gray-light: #E6E6E6;
     --background-gray-dark: #D9D9D9;
+    --button-Tangerine: #F28F3B;
+    --button-Jet: #39393A;
 }
 
 
@@ -114,4 +116,39 @@ body {
 .footer-wrapper {
     grid-area: footer;
     background-color: var(--primary-color);
+}
+
+/*Custom button1 that is tangerine color feel free to adjust as needed*/
+.custom-button1{
+    
+        /* Set the desired background color */
+        background-color: var(--button-Tangerine); /* Replace with your preferred color code */
+
+
+        color: white;
+        border: none; 
+        cursor: pointer; 
+        padding: 5px 5px;
+        
+
+      
+        font-size: 14px; 
+}
+
+/*Custom button2 that is tangerine color feel free to adjust as needed*/
+
+.custom-button2{
+    
+    /* Set the desired background color */
+    background-color: var(--button-Jet); /* Replace with your preferred color code */
+
+
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+    padding: 5px 5px;
+   
+
+  
+    font-size: 14px; 
 }
