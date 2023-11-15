@@ -11,6 +11,11 @@
 }
 
 
+/* HIDE SCROLLBAR */
+body::-webkit-scrollbar {
+    width: 0px;
+  }
+
 /* PAGE STRUCTURE */
 body {
     display: grid;
