@@ -8,6 +8,12 @@ index = Blueprint('index', __name__)
 def home():
     return render_template('index.html')
 
+""""
+TODO 
+Make route files with blueprints for all of the functions below.
+The reason the app is running is because they are all registerd under the index blueprint.
+"""
+
 #COMMUNITY PAGE
 @index.route('/community')
 def community():
@@ -32,16 +38,6 @@ def login():
 @index.route('/marketplace')
 def marketplace():
     return render_template('marketplace.html')
-
-#PROFILE PAGE
-@index.route('/profile')
-def profile():
-    return render_template('profile.html')
-
-#SETTINGS PAGE
-@index.route('/settings')
-def settings():
-    return render_template('settings.html')
 
 #USER PAGE
 @index.route('/user')
