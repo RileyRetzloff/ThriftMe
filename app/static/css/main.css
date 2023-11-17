@@ -12,6 +12,10 @@
     --button-Jet: #39393A;
 }
 
+/* HIDE SCROLLBAR */
+body::-webkit-scrollbar {
+    width: 0px;
+  }
 
 /* PAGE STRUCTURE */
 body {
