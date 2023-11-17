@@ -9,5 +9,5 @@ def create_app():
     # app.register_blueprint(page_routes.blueprint_name)
     # app.register_blueprint(...)
     app.register_blueprint(index_routes.index)
-
+    app.register_blueprint(login_routes.login)
     return app

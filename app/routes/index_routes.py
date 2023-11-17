@@ -26,7 +26,7 @@ def create_listing():
 #LOGIN PAGE
 @index.route('/login')
 def login():
-    return render_template('login.html')
+   return render_template('login.html')
 
 #MARKETPLACE PAGE
 @index.route('/marketplace')
