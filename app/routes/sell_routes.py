@@ -5,3 +5,4 @@ sell = Blueprint('sell', __name__)
 @sell.route('/sell')
 def create_listing():
     return render_template('sell.html')
+
