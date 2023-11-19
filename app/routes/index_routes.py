@@ -24,13 +24,6 @@ def community():
 def contact():
     return render_template('contact.html')
 
-#CREATE LISTING PAGE
-@index.route('/create_listing')
-def create_listing():
-    return render_template('create_listing.html')
-
-
-
 #MARKETPLACE PAGE
 @index.route('/marketplace')
 def marketplace():
