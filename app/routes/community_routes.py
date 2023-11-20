@@ -9,14 +9,15 @@ def community_page():
 
     """
     TODO
-    Fix template elemetns so that the webpage should 
+    Fix template elemetns so that the webpage should generate content when scrolling.
+    Can do this using a GET request.
     """
 
     """
     community page must always be a multiple of 3 
-    to get the correct "grid" effect
+    to get the correct "grid" effect and has to have a minimum of 9 posts to look right
     """
-    num_pages = random.randint(1,6) * 3 
+    num_pages = random.randint(3,6) * 3 
     
 
     

@@ -68,7 +68,7 @@ CREATE TABLE community_posts (
 
 -- Relationship between users and followers
 CREATE TABLE followers (
-    user_id INT,
+    user_id INT, 
     follower_id INT,
     PRIMARY KEY (user_id, follower_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,

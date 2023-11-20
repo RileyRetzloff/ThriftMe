@@ -6,12 +6,12 @@
 <!-- <link rel="stylesheet" href="../static/css/<YOUR STYLESHEET HERE>"> -->
 {% endblock %}
 {% block content %}
-
+<!--TODO implement user sessions so content can be dynamiclly generated when they scroll at the bottom of the page-->
 <h2>Community</h2>
 <hr class = "border border-muted border-1 opacity-75">
 
 <div class="container">
-    <div class ="row mr-2" data-masonry='{"percentPositon" : true}' >
+    <div class ="row mr-2 overflow-auto" data-masonry='{"percentPositon" : true}' >
         <div class ="card-columns">
 
 
