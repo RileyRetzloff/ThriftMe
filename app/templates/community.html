@@ -1,8 +1,39 @@
 {% extends "template.html" %}
 
 {% block head %}
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<!-- above is the masonry cdn for bootstrap, it will make the community page look like an instagram explore page and also responsive-->
 <!-- <link rel="stylesheet" href="../static/css/<YOUR STYLESHEET HERE>"> -->
 {% endblock %}
-
 {% block content %}
+
+<h2>Community</h2>
+<hr class = "border border-muted border-1 opacity-75">
+
+<div class="container">
+    <div class ="row mr-2" data-masonry='{"percentPositon" : true}' >
+        <div class ="card-columns">
+
+
+            {% for _ in range(num_pages)%}
+            <div class="card" style="width: fit-content; height: fit-content;">
+                <a href="#">
+                    <img class="card-img-top" src="https://placehold.co/600x400/png" alt="Card image cap">
+                </a>
+                <div class="card-body">
+                
+                <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem doloribus minima quae numquam.</p>
+                </div>
+            </div>        
+            {% endfor %}
+
+
+              
+
+
+              
+        </div>
+    </div>
+</div>
+
 {% endblock %}
