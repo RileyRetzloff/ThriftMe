@@ -165,6 +165,7 @@ body {
 .main-wrapper {
     grid-area: main;
     padding-left: 2em;
+    overflow: hidden;
 }
 
 /* Fill horizontal space when sidebar is collapsed */
