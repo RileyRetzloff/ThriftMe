@@ -47,3 +47,7 @@ def settings():
 @index.route('/user')
 def user():
     return render_template('user.html')
+
+@index.route('/signup')
+def signup():
+    return render_template('signup.html')
