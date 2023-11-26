@@ -5,3 +5,15 @@ login = Blueprint('login', __name__)
 def display():
     return render_template('login.html')
 
+
+@login.route('/login')
+def authUser():
+    email = request.form.get('email')
+    password = request.form.get('password')
+    #if the user.email == user.password
+        # redirect to the profile page of said user
+    #else
+        # throw an error and ask the user to retry
+
+
+

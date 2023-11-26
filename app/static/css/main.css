@@ -22,7 +22,7 @@ body {
     display: grid;
     grid-template-columns: 200px 1fr;
     grid-template-rows: 80px minmax(calc(100vh - 110px), 1fr) 30px;
-    grid-template-areas: 
+    grid-template-areas:
         "header header"
         "sidebar main"
         "footer footer";
@@ -124,35 +124,73 @@ body {
 
 /*Custom button1 that is tangerine color feel free to adjust as needed*/
 .custom-button1{
-    
+
         /* Set the desired background color */
         background-color: var(--button-Tangerine); /* Replace with your preferred color code */
 
 
         color: white;
-        border: none; 
-        cursor: pointer; 
+        border: none;
+        cursor: pointer;
         padding: 5px 5px;
-        
 
-      
-        font-size: 14px; 
+
+
+        font-size: 14px;
 }
 
 /*Custom button2 that is tangerine color feel free to adjust as needed*/
 
 .custom-button2{
-    
+
     /* Set the desired background color */
     background-color: var(--button-Jet); /* Replace with your preferred color code */
 
 
-    color: white; 
-    border: none; 
-    cursor: pointer; 
+    color: white;
+    border: none;
+    cursor: pointer;
     padding: 5px 5px;
-   
 
-  
-    font-size: 14px; 
+
+
+    font-size: 14px;
+}
+
+/* For the login page */
+
+.login{
+    background-color: #F28F3B;
+    display: flex;
+    flex-direction: column;
+    width : 35vw;
+    height : 450px;
+    justify-content: center;
+    align-items: center;
+    gap:1 rem;
+    border-radius: 15%;
+}
+
+.sign-up-button {
+
+    /* position: absolute;
+    left: 1100px;
+    top:700;
+    background-color: #C8553D; */
+}
+
+.hidden{
+    display: none;
+}
+
+.sign-up {
+    background-color: #297373;
+    display: flex;
+    flex-direction: column;
+    width : 35vw;
+    height : 450px;
+    justify-content: center;
+    align-items: center;
+    gap:1 rem;
+    border-radius: 15%;
 }
