@@ -10,6 +10,7 @@ def display():
 def authUser():
     email = request.form.get('email')
     password = request.form.get('password')
+    pass
     #if the user.email == user.password
         # redirect to the profile page of said user
     #else
