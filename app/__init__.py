@@ -11,10 +11,16 @@ def create_app():
     
     load_dotenv()
 
+    app.secret_key = os.getenv('APP_SECRET_KEY', 'apple')
+
     #database connection
     app.config["SQLALCHEMY_DATABASE_URI"] = \
     f'postgresql://{os.getenv("DB_USERNAME")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}'
     app.config['SQLAlCHEMY_ECHO'] = True
+    app.config['SECRET_KEY'] = 'apples'
+
+    app.config['SESSION_COOKIE_PATH'] = '/'
+
 
     db.init_app(app)
 
@@ -22,9 +28,9 @@ def create_app():
     with app.app_context():
         try:
             db.session.execute(text('SELECT 1'))
-            print('Successful connection')
+            print(f'\n\tSuccessful connection to {os.getenv("DB_USERNAME")}\n')
         except Exception as e:
-            print(f"Connection failed. ERROR:{e}")
+            print(f"\nConnection failed. ERROR:{e}")
 
 
 
@@ -52,5 +58,5 @@ def create_app():
     app.register_blueprint(contact_routes.contact)
     app.register_blueprint(user_routes.user)
     app.register_blueprint(marketplace_routes.marketplace)
-    
+
     return app
