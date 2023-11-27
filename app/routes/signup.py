@@ -1,4 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for
+from ..database import db
+from pipeline import users
 signup = Blueprint('signup', __name__)
 
 @signup.route('/')
