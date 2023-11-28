@@ -41,69 +41,47 @@
     --padding-xl: 24px;
 }
 
-/* BUTTONS */
+/* PROFILE PAGE */
 
-button {
-    border: none;
-    border-radius: var(--radius-md);
-    padding: var(--padding-mdsm) var(--padding-mdlg);
-    cursor: pointer;
+.profile-layout {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--margin-md);
+    margin-right: var(--margin-md);
 }
 
-.button-primary {
-    background-color: var(--primary-color);
-}
-
-.button-secondary {
-    background-color: var(--secondary-color-light);
-    color: var(--background-white);
-}
-
-.button-light {
+.profile-info {
+    height: 85vh;
+    width: 23vw;
+    padding: 20px;
+    border-radius: 12px;
     background-color: var(--background-gray-light);
 }
 
-.button-dark {
-    background-color: var(--text-dark);
-}
-
-/* PROFILE PAGE */
-
-.profile-layout{
-    display: flex;
-    text-align: center;
-}
-
-.profile-info{
-    height: 85vh;
-    width: 23vw;
-    padding:20px;
-    border-radius: 12px;
-    background-color:  var(--background-gray-light);
-    margin-bottom:10vh;
-    margin-left: 2vw;
-}
-
-.profile-image{
+.profile-image {
     background-color: var(--background-gray-dark);
-    height:120px;
-    width:120px; /*Adjust values when implementing dynamic html to use vh/vw */
+    height: 120px;
+    width: 120px;
+    /*Adjust values when implementing dynamic html*/
     border-radius: 50%;
-    padding:8px;
+    padding: 8px;
 }
 
-.profile-bio{
+.profile-bio {
     text-align: left;
 }
 
-.profile-bio-desc{
+.profile-bio-desc {
     display: flex;
     justify-content: center;
     height: 30vh;
-    padding-top:10px;
+    padding-top: 10px;
     background-color: white;
     border-radius: 12px;
 }
+
 .profile-bio-desc p {
     text-align: left;
 }
@@ -111,24 +89,28 @@ button {
 .edit-profile-button {
     padding: 10px;
     background-color: #C8553D;
-    color: #fff; 
+    /* Updated background color */
+    color: #fff;
+    /* White text color */
     border: none;
-    border-radius: 12px; 
+    border-radius: 12px;
+    /* Rounded edges */
     cursor: pointer;
 }
 
 .edit-profile-button:hover {
     background-color: #A54A33;
+    /* Updated background color on hover */
 }
-.profile-listings
-{
+
+.profile-listings {
     height: 85vh;
     width: 50vw;
-    padding:20px;
+    padding: 20px;
     border-radius: 12px;
     color: white;
     text-align: center;
     border-radius: 12px;
     background-color: var(--secondary-color-dark);
-    margin-left:5vw;
+    /* margin-left: 5vw; */
 }
