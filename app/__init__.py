@@ -22,6 +22,11 @@ def create_app():
     with app.app_context():
         try:
             db.session.execute(text('SELECT 1'))
+            print(os.getenv("DB_USERNAME"))
+            print(os.getenv("DB_PASSWORD"))
+            print(os.getenv("DB_HOST"))
+            print(os.getenv("DB_PORT"))
+            print(os.getenv("DB_NAME"))
             print('Successful connection')
         except Exception as e:
             print(f"Connection failed. ERROR:{e}")

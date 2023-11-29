@@ -266,3 +266,5 @@ ORDER BY
 
 --test if cascade works
 TURNCATE TABLE users CASCADE;
+
+select * from users;
