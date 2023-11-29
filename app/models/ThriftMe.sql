@@ -68,7 +68,7 @@ CREATE TABLE community_posts (
 
 -- Relationship between users and followers
 CREATE TABLE followers (
-    user_id INT,
+    user_id INT, 
     follower_id INT,
     PRIMARY KEY (user_id, follower_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
@@ -264,7 +264,10 @@ ORDER BY
     posts.post_date DESC;
 
 
---test if cascade works
-TURNCATE TABLE users CASCADE;
+--test if cascade works -> it works
+--dangerous query
+DELETE from users; --delete all users and their associated tables
+ALTER SEQUENCE users_user_id_seq RESTART WITH 1; -- reset the sequence
 
-select * from users;
+select * from users; -- check if the data is cleared
+
