@@ -18,7 +18,7 @@ class Users(db.Model):
     public_access = db.Column(db.Boolean, nullable=False)
 
 
-    albums = db.relationship('Album', back_populates='user')
+    #albums = db.relationship('Album', back_populates='user')
 
 """
 Album stores refrences to photos 
@@ -47,4 +47,4 @@ class Photo(db.Model):
     album_id = db.Column(db.Integer, db.ForeignKey('albums.album_id', ondelete='CASCADE'), nullable=False)
     photo_data = db.Column(db.LargeBinary)
 
-    album = db.relationship('Album', back_populates='photos')
+    #album = db.relationship('Album', back_populates='photos')
