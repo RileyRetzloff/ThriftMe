@@ -44,12 +44,17 @@
 /* PROFILE PAGE */
 
 .profile-layout {
+    font-size: var(--font-mdlg);
+    background-color: var(--background-gray-dark);
+    padding: 30px;
+    border-radius: 12px;
     display: flex;
     text-align: center;
     justify-content: space-between;
     align-items: center;
     margin-top: var(--margin-md);
     margin-right: var(--margin-md);
+    margin-bottom: var(--margin-md);
 }
 
 .profile-info {
