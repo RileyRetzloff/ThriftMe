@@ -27,4 +27,4 @@ def support_ticket():
             ) 
     msg.body = 'Content'
     mail.send(msg)
-    return redirect('/orders')
+    return redirect('/contact')
