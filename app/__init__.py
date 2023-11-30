@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from .database import *
 from sqlalchemy import text
+from flask_bcrypt import Bcrypt
 
 
 
@@ -22,6 +23,10 @@ def create_app():
 
 
     db.init_app(app)
+<<<<<<< HEAD
+=======
+    bcrypt = Bcrypt()
+>>>>>>> main
     bcrypt.init_app(app)
     #Validate database connection
     with app.app_context():
