@@ -13,7 +13,7 @@ def render_settings():
     user = Users.get_by_username(username)
 
     if user is None:
-        return render_template('settings.html')
+        return render_template('index.html')
 
     if username in session.values() and session['username']==username:
         
@@ -69,7 +69,7 @@ def edit_user_info(arg):
 #makes half of the password 
 def mask_first_half(input_string):
     length = len(input_string)
-    half_length = length // 2
+    altered_length = length // 36
 
-    masked_string = '*' * half_length + input_string[half_length:]
+    masked_string = '*' * altered_length
     return masked_string
