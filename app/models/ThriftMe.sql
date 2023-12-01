@@ -53,6 +53,12 @@ CREATE TABLE listings (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
+--forgot to add photos to listings lol PLEASE RUN THIS
+ALTER TABLE listings
+ADD COLUMN album_id INT,
+ADD FOREIGN KEY (album_id) REFERENCES albums(album_id) ON DELETE SET NULL;
+
+
 -- Represents community posts that can reference albums and a reference to listings if needed
 CREATE TABLE community_posts (
     community_post_id SERIAL PRIMARY KEY,

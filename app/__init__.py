@@ -23,10 +23,6 @@ def create_app():
 
 
     db.init_app(app)
-<<<<<<< HEAD
-=======
-    bcrypt = Bcrypt()
->>>>>>> main
     bcrypt.init_app(app)
     #Validate database connection
     with app.app_context():

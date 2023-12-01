@@ -30,7 +30,7 @@ def create():
     sesh_usr  = session.get('username') 
 
     if user is not None or sesh_usr is not None: # if the user exists redirect them to the login page
-        return redirect('login.html')
+        return redirect('/login')
 
     if not username or not password or not email:
         abort(400)
@@ -38,6 +38,7 @@ def create():
     hashed_password = bcrypt.generate_password_hash(password,12)
     new_user = Users(username,email,hashed_password)
 
+    ##adding user session upon creation of a new user
     session['username'] = username
     db.session.add(new_user)
     db.session.commit()

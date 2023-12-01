@@ -1,11 +1,10 @@
 {% extends "template.html" %}
 
 {% block head %}
-<script src="static/scripts/editUserList.js"></script>
 {% endblock %}
 
 {% block content %}
-<h2>{{ access }}</h2>
+<h2>Edit</h2>
 <hr class="border border-muted border-1 opacity-75">
 
 <div class="card rounded mr-2 bg-light text-secondary">
@@ -13,24 +12,30 @@
     <div class="media">
         <div class="media-body">
             <h4 class="mt-0 mb-1 ml-1">Email</h4>
-            <div id="email-field">
-                <input class="ml-2 rounded-9" type="text" id="email-input" value="{{ email }}">
-            </div>
+                <form action="/edit" method="post">
+                    <div id="email-field">
+                        <input class="ml-2 rounded-9" type="text" id="email-input" value="{{ email }}" name="email">
+                        <input type= "hidden" name="flag" value="change-email">
+                        <button class="custom-button2 mt-1 rounded text-white"> Submit</button>
+                    </div>
+                </form>
             <h6 class="mt-0 mb-1 ml-1" id="email-display">{% if arg != 'email' %}{{ email }}{% endif %}</h6>
         </div>
-        <button type="button" onclick="showField('email')" class="custom-button1 mt-3 mr-2 rounded text-white">Change email</button>
     </div>
 
     <!-- Password -->
     <div class="media mt-4 mb-4">
         <div class="media-body">
             <h4 class="mt-0 mb-1 ml-1">Password</h4>
+            <form action="/edit" method="post">
             <div id="password-field">
-                <input class="ml-2 rounded-9" type="password" id="password-input" value="{{ password }}">
+                <input class="ml-2 rounded-9" type="password" id="password-input" value="{{ password }}" name = "password">
+                <input type= "hidden" name="flag" value="change-password">
+                <button class="custom-button2 mt-1 rounded text-white"> Submit</button>
             </div>
+            </form>
             <h6 class="mt-0 mb-1 ml-1" id="password-display">{% if arg != 'password' %}{{ password }}{% endif %}</h6>
         </div>
-        <button type="button" onclick="showField('password')" class="custom-button1 mt-3 mr-2 rounded text-white">Change Password</button>
     </div>
 
     <!-- Access -->
@@ -38,21 +43,21 @@
         <div class="media-body">
             <h4 class="mt-0 mb-1 ml-1">Access</h4>
             <div id="access-field">
+                <form action="/edit" method="post">
                 {% if access == 'Public' %}
-                <div class="form-check form-switch">
-                    <input type="checkbox" checked>
-                    <label class="form-check-label" for="flexSwitchCheckChecked">Public</label>
+                <div>
+                    <input type="hidden" name = "flag" value="change-access" name ="access">
+                    <button class="custom-button2 ml-1 mr-2 mb-3 rounded text-white">Make Private</button>
                 </div>
                 {% else %}
-                <div class="form-check form-switch">
-                    <input type="checkbox" id="Private">
-                    <label for="access">Private</label>
+                <div>
+                    <input type="hidden" name = "flag" value="change-access" name = "access">
+                    <button class="custom-button2 ml-1 mr-2 mb-3 rounded text-white">Make Public</button>
                 </div>
                 {% endif %}
+                </form>
             </div>
-            <h6 class="mt-0 mb-1 ml-1" id="access-display">{% if arg != 'access' %}{{ access }}{% endif %}</h6>
         </div>
-        <button type="button" onclick="showField('access')" class="custom-button1 mt-3 mr-2 rounded text-white">Change Access</button>
     </div>
 </div>
 
@@ -63,16 +68,6 @@
     </div>
 </form>
 
-<script>
-    function showField(fieldName) {
-        // Hide all fields
-        document.getElementById('email-field').style.display = 'none';
-        document.getElementById('password-field').style.display = 'none';
-        document.getElementById('access-field').style.display = 'none';
 
-        // Show the selected field
-        document.getElementById(fieldName + '-field').style.display = 'block';
-    }
-</script>
 
 {% endblock %}
