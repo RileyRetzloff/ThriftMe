@@ -1,5 +1,7 @@
 from ..database import db
 import random,binascii,os
+from datetime import datetime
+from dataclasses import dataclass
 #TODO make classes for the other tables
 
 
@@ -76,13 +78,18 @@ Album stores refrences to photos
 [One User] -> [Many albums(posts)]
 [One album] -> [Many photos]
 """
-    
+
 class Album(db.Model):
     __tablename__ = 'albums'
 
     album_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), nullable=False)
     album_name = db.Column(db.String(100), nullable=False)
+
+
+    def __str__(self) -> str:
+        return (f"album_name: {self.album_name}\n"
+                f"album_id: {self.album_id}\n")
 
 
 
@@ -96,8 +103,13 @@ class Photo(db.Model):
 
     photo_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     album_id = db.Column(db.Integer, db.ForeignKey('albums.album_id', ondelete='CASCADE'), nullable=False)
-    photo_data = db.Column(db.LargeBinary)
+    photo_data = db.Column(db.Text)
 
+
+    def __str__(self) -> str:
+        return (f"photo_id: {self.photo_id}\n"
+                f"album_id: {self.album_id}\n"
+                f"photo_data: {self.photo_data}\n")
 
 
 """
@@ -107,6 +119,8 @@ the album stores the photo(s) in the post
 [user] -> [post(s)] -> [album] -> [photo(s)]
 
 """
+
+
 class Post(db.Model):
     __tablename__ = 'posts'
 
@@ -114,7 +128,6 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), nullable=False)
     post_content = db.Column(db.Text)
     album_id = db.Column(db.Integer, db.ForeignKey('albums.album_id', ondelete='SET NULL'))
-
 
 """
 model to define comments 
@@ -166,5 +179,24 @@ followers = db.Table(
 TODO Implement the listing and community models and tables
 """
 
+"""
+Community posts-similar to post and listing but can hold refrence to a listing if needed
+"""
+@dataclass
+class CommunityPost(db.Model):
+    __tablename__ = 'community_posts'
+    community_post_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), nullable=False)
+    post_content = db.Column(db.Text, nullable=False)
+    album_id = db.Column(db.Integer, db.ForeignKey('albums.album_id', ondelete='CASCADE'), nullable=False)
+    listing_id = db.Column(db.Integer, db.ForeignKey('listings.listing_id', ondelete='CASCADE'))
+    post_date = db.Column(db.TIMESTAMP, default=datetime.utcnow, nullable=False)
+
+
+    def __str__(self) -> str:
+        return (f"community_post_id: {self.community_post_id}\n"
+                f"post_content: {self.post_content}\n"
+                f"post_date: {self.post_date}\n")
+                
 
 

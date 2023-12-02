@@ -7,14 +7,14 @@
 <link rel="stylesheet" href="/static/css/community.css">
 
 
-        {% for item in data %}
+        {% for item in temp %}
         <div class="card community-container" style="width: fit-content; height: fit-content;">
             <a href="#">
-                <img class="card-img" src="https://placehold.co/400x400/png" alt="Card image cap">
+                <img class="card-img" src="{{item[2]}}" alt="Card image cap">
             </a>
             <div class="card-img-overlay">
             
-            <p class="card-text">{{ item }}</p>
+            <p class="card-text">{{ item[0] }}</p>
             </div>
         </div>        
         {% endfor %}
