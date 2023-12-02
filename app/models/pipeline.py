@@ -2,6 +2,16 @@ from ..database import db
 import random,binascii,os
 #TODO make classes for the other tables
 
+
+
+##User session object used to store variables related to the users privlages and behavior
+class UserSession():
+    def __init__(self, username):
+        self.username = username
+        community_request_limit = 20
+        #can add other limits and behaviors if needed
+
+
 """
 User class that makes people able to login to the app
 Also serves as a central hub to all other tables
@@ -20,7 +30,7 @@ class Users(db.Model):
 
     
 
-    #Constructor that creates the "User"
+    #Constructor that creates dummy user 
     def __init__(self,email: str, password: str) -> None:
         self.email = email
         self.password = password
@@ -28,7 +38,13 @@ class Users(db.Model):
         #can omit later since there is no logic to create a username or uplad profile picture right now
         self.username = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=random.randint(5,20)))
         self.profile_picture = binascii.b2a_base64(os.urandom(17))
-        
+    
+    
+    def __init__(self,username,email,pw_hash):
+        self.username = username
+        self.email = email 
+        self.password = pw_hash
+        self.public_access = True
     
     def get_username(self):
         return self.username
@@ -39,7 +55,8 @@ class Users(db.Model):
     #simple lookup using query id, returns none if not in db
     def get_by_username(username):
         
-        return Users.query.filter_by(username=username).first()
+        usr_instance = Users.query.filter_by(username=username).first()
+        return usr_instance 
 
     
     

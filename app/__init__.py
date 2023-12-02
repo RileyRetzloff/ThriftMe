@@ -1,7 +1,7 @@
 from flask import Flask
 import os 
 from dotenv import load_dotenv
-from .database import db
+from .database import *
 from sqlalchemy import text
 from flask_bcrypt import Bcrypt
 
@@ -19,12 +19,10 @@ def create_app():
     f'postgresql://{os.getenv("DB_USERNAME")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}'
     app.config['SQLAlCHEMY_ECHO'] = True
     app.config['SECRET_KEY'] = 'apples'
-
     app.config['SESSION_COOKIE_PATH'] = '/'
 
 
     db.init_app(app)
-    bcrypt = Bcrypt()
     bcrypt.init_app(app)
     #Validate database connection
     with app.app_context():
