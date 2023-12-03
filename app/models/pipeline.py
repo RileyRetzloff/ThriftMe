@@ -5,15 +5,6 @@ from dataclasses import dataclass
 #TODO make classes for the other tables
 
 
-
-##User session object used to store variables related to the users privlages and behavior
-class UserSession():
-    def __init__(self, username):
-        self.username = username
-        community_request_limit = 20
-        #can add other limits and behaviors if needed
-
-
 """
 User class that makes people able to login to the app
 Also serves as a central hub to all other tables
@@ -182,7 +173,8 @@ TODO Implement the listing and community models and tables
 """
 Community posts-similar to post and listing but can hold refrence to a listing if needed
 """
-@dataclass
+
+@dataclass ##supress weird json errors with this
 class CommunityPost(db.Model):
     __tablename__ = 'community_posts'
     community_post_id = db.Column(db.Integer, primary_key=True)
