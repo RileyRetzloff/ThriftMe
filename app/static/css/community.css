@@ -49,7 +49,10 @@
 
 
 
+.img{
+    object-fit: cover;
 
+}
 
 
 

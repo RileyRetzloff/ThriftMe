@@ -1,8 +1,13 @@
+from ast import alias
+import mimetypes
+from turtle import back
+from typing import Optional
 from ..database import db
 import random,binascii,os
 from datetime import datetime
 from dataclasses import dataclass
 #TODO make classes for the other tables
+
 
 
 """
@@ -51,7 +56,12 @@ class Users(db.Model):
         usr_instance = Users.query.filter_by(username=username).first()
         return usr_instance 
 
-    
+    def get_username_by_id(user_id)-> str:
+        usr_instance = Users.query.filter_by(user_id=user_id).first()
+        if usr_instance:
+            return usr_instance.get_username()
+        else:
+            return None
     
     ##test code to see if user is created
     def __str__(self) -> str:
@@ -61,7 +71,38 @@ class Users(db.Model):
                 f"public access: {self.public_access}\n"
                 f"profile picture: {self.profile_picture}")
 
+class Listing(db.Model):
+    __tablename__ = 'listings'
+    
+    # Fields
+    listing_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
+    album_id = db.Column(db.Integer, db.ForeignKey('albums.album_id'), nullable=True)
+    title = db.Column(db.String(100), nullable=False)
+    description =  db.Column(db.Text, nullable=False)
+    price = db.Column(db.Numeric(10, 2), nullable=False)
+    
+    # Relationships
+    user = db.relationship('Users', backref='listings')
+    album = db.relationship('Album', backref='listing', uselist=False)
+    
+    # Constructor
+    def __init__(self, title: str, description: str, price: float, user_id: int, album_id: Optional[int] = None):
+        self.title = title
+        self.description = description
+        self.price = price 
+        self.user_id = user_id
+        self.album_id = album_id
 
+    # Object as string
+    def __str__(self) -> str:
+        return(
+            f"title: {self.title}\n"
+            f"description: {self.description}\n"
+            f"price: {self.price}\n"
+            f"user_id: {self.user_id}\n"
+            f"album_id: {self.album_id}\n"
+        )
 
 
 """
@@ -73,9 +114,17 @@ Album stores refrences to photos
 class Album(db.Model):
     __tablename__ = 'albums'
 
+    # Fields
     album_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), nullable=False)
     album_name = db.Column(db.String(100), nullable=False)
+    
+    # Relationships
+    photos = db.relationship('Photo', backref='album', lazy=True)
+    
+    def __init__(self, user_id: int, album_name: Optional[str] = None):
+        self.user_id = user_id
+        self.album_name = album_name
 
 
     def __str__(self) -> str:
@@ -92,6 +141,7 @@ Table to store many photos
 class Photo(db.Model):
     __tablename__ = 'photos'
 
+    # Fields
     photo_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     album_id = db.Column(db.Integer, db.ForeignKey('albums.album_id', ondelete='CASCADE'), nullable=False)
     photo_data = db.Column(db.Text)
@@ -192,3 +242,19 @@ class CommunityPost(db.Model):
                 
 
 
+class CommunityPostComment(db.Model):
+    __tablename__ = 'community_post_comments'
+
+    comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'))
+    community_post_id = db.Column(db.Integer, db.ForeignKey('community_posts.community_post_id', ondelete='CASCADE'))
+    comment_content = db.Column(db.Text)
+    comment_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
+
+
+
+community_post_likes = db.Table(
+    'community_post_likes', 
+   db.Column('user_id',db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True),
+   db.Column('community_post_id',db.Integer, db.ForeignKey('community_post.post_id', ondelete='CASCADE'), primary_key=True)
+)

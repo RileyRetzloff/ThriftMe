@@ -3,7 +3,6 @@
 {% block head %}
 
 <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
-
 <!-- above is the masonry cdn for bootstrap, it will make the community page look like an instagram explore page and also responsive-->
 <link rel="stylesheet" href="/static/css/community.css">
 <!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -15,16 +14,43 @@
 and limit the amount of posts so that get requests don't get to be too much
 The main issue is that -->
 <h2>
-    Post ID: {{community_post_id}}
+    Post Content: {{post_content}}
 </h2>
 
 <hr class = "border border-muted border-1 opacity-75">
 
+<div class="card rounded mr-2 p-3 bg-light text-secondary">
+    <div class="row justify-content-center">
+        <div class = "col-md-6">
+            <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block " src="{{photo_data}}" alt="First slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="..." alt="Second slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="..." alt="Third slide">
+                </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>  
 
-<h2>
-    Photo Data: {{photo_data}}
-</h2>
-<img src ="{{photo_data}}" alt="pic" witdh="400" height="400">
+
+<div>
+    <h3>Likes: {{likes}}</h3>
+    <h3>Comments {{com}}</h3>
+    {% for tuple in comments_and_likes %}
+
+    <h4>
+       {{tuple[2]}}: {{tuple[0]}}
+    </h4>
+    {% endfor %}
+</div>
+<!--<img src ="{{photo_data}}" alt="pic" witdh="400" height="400">-->
 
 
 <h2>
