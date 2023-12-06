@@ -1,0 +1,36 @@
+{% extends "template.html" %}
+
+{% block head %}
+
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+
+<!-- above is the masonry cdn for bootstrap, it will make the community page look like an instagram explore page and also responsive-->
+<link rel="stylesheet" href="/static/css/community.css">
+<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    --->
+{% endblock %}
+{% block content %}
+
+<!--TODO implement user sessions so content can be dynamiclly generated when they scroll at the bottom of the page
+and limit the amount of posts so that get requests don't get to be too much
+The main issue is that -->
+<h2>
+    Post ID: {{community_post_id}}
+</h2>
+
+<hr class = "border border-muted border-1 opacity-75">
+
+
+<h2>
+    Photo Data: {{photo_data}}
+</h2>
+<img src ="{{photo_data}}" alt="pic" witdh="400" height="400">
+
+
+<h2>
+   Album ID:  {{album_id}}
+</h2>
+    
+
+
+{% endblock %}

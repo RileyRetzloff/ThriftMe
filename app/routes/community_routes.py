@@ -28,7 +28,7 @@ def generate_data():
     ##TODO add likes and comments to the post
     temp = (db.session.query(
         CommunityPost.post_content,
-        CommunityPost.post_date,
+        CommunityPost.community_post_id,
         Photo.photo_data
     )
     .join(Album, CommunityPost.album_id == Album.album_id)
@@ -41,10 +41,10 @@ def generate_data():
     #convert to a list of tuples that have objects in them kinda like [(CommunityPost(),Photo()),...]
     processed_temp = [tuple(row) for row in temp if not(row is None)]
 
-    #add the batch of posts to the total amount of posts the user has generated
-    #set operation for lazy data integrity
-    community_data.extend(list(set(processed_temp))) 
 
+    #add the batch of posts to the total amount of posts the user has generated
+    #set operation for lazy data integrity may unsort the list
+    community_data.extend(list(set(processed_temp))) 
     #IMPORTANT update the session data
     session['community_data'] = community_data
 
@@ -93,3 +93,29 @@ def more_posts():
     else:
         temp = generate_data()
         return  jsonify ({'html': render_template('community_posts_batch.html', temp=temp)})
+    
+
+
+#Get a single instance of a community post
+#TODO link likes and comments to the community post and add design elements
+@community.route('/community_post/<int:community_post_id>',methods=['POST','GET'])
+def community_post_(community_post_id):
+    print('works')
+    post = (db.session.query(
+        CommunityPost.post_content,
+        CommunityPost.album_id,
+        Photo.photo_data
+    )
+    .join(Album, CommunityPost.album_id == Album.album_id)
+    .join(Photo, Album.album_id == Photo.album_id)
+    .filter(CommunityPost.community_post_id == community_post_id)
+    .first()
+    )
+
+    
+    return render_template('community_singleton.html',
+                           community_post_id=community_post_id,
+                           post_content=post[0],
+                           album_id=post[1],
+                           photo_data=post[2])
+
