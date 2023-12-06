@@ -25,12 +25,12 @@ def generate_data():
         return
     
 
-    ##Query to get just the post content, date, and photo_data
+    ##Query to get just the post content, date, and photo_url
     ##TODO add likes and comments to the post
     temp = (db.session.query(
         CommunityPost.post_content,
         CommunityPost.community_post_id,
-        Photo.photo_data
+        Photo.photo_url
     )
     .join(Album, CommunityPost.album_id == Album.album_id)
     .join(Photo, Album.album_id == Photo.album_id)
@@ -110,7 +110,7 @@ def community_post_(community_post_id):
     post_content = (db.session.query(
         CommunityPost.post_content,
         CommunityPost.album_id,
-        Photo.photo_data
+        Photo.photo_url
     )
     .join(Album, CommunityPost.album_id == Album.album_id)
     .join(Photo, Album.album_id == Photo.album_id)
@@ -144,7 +144,7 @@ def community_post_(community_post_id):
                            community_post_id=community_post_id,
                            post_content=post_content[0],
                            album_id=post_content[1],
-                           photo_data=post_content[2],
+                           photo_url=post_content[2],
                            comments_and_likes = likes_comments,
                            likes = like_count)
 

@@ -1,5 +1,4 @@
 create database ThriftMe;
-
 -- Store User information
 -- Most important table
 CREATE TABLE users (
@@ -16,21 +15,28 @@ CREATE TABLE users (
 CREATE TABLE albums (
     album_id SERIAL PRIMARY KEY,
     user_id INT,
-    album_name VARCHAR(100) NOT NULL,
+    album_name VARCHAR(100),
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
 
+
 -- Table to store photos
 --Albums will rely on this table
+-- Run the following commands to fix your local DB:
+-- ALTER TABLE photos DROP COLUMN photo_data DROP COLUMN photo_mimetype;
+-- ALTER TABLE photos ADD COLUMN photo_url TEXT;
 CREATE TABLE photos (
     photo_id SERIAL PRIMARY KEY,
     album_id INT,
-    photo_data BYTEA,
+    photo_url TEXT,
     FOREIGN KEY (album_id) REFERENCES albums(album_id) ON DELETE CASCADE
 );
 ALTER TABLE photos
 ALTER COLUMN photo_data TYPE TEXT;
+
+ALTER TABLE photos
+RENAME COLUMN photo_data TO  photo_url;
 
 -- Posts Created by users and holds text
 --References album
@@ -48,11 +54,13 @@ CREATE TABLE posts (
 -- Store albums for posts and price information
 CREATE TABLE listings (
     listing_id SERIAL PRIMARY KEY,
-    user_id INT,
-    listing_name VARCHAR(100) NOT NULL,
-    caption TEXT,
-    price DECIMAL(10, 2),
-    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+    user_id INT NOT NULL,
+    album_id INT NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    FOREIGN KEY (album_id) REFERENCES albums(album_id) ON DELETE SET NULL
 );
 
 --forgot to add photos to listings lol PLEASE RUN THIS

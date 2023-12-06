@@ -141,3 +141,5 @@ GROUP BY
 
 select * from photos;
 select * from community_post_comments
+
+select * from photos;
