@@ -24,7 +24,7 @@ INSERT INTO albums (user_id, album_name)
 SELECT 3, 'Community Album ' || generate_series(1, 100);
 
 -- Insert 100 identical photos
-INSERT INTO photos (album_id, photo_data)
+INSERT INTO photos (album_id, photo_url)
 SELECT
     a.album_id,
     '/static/images/ThriftMe_logo.png'
@@ -52,7 +52,7 @@ select * from albums;
 SELECT
     cp.post_content,
     cp.post_date,
-    p.photo_data
+    p.photo_url
 FROM
     community_posts cp
 JOIN
@@ -91,7 +91,7 @@ BEGIN
         RETURNING album_id INTO albumId;
 
         -- Insert a photo for the album
-        INSERT INTO photos (album_id, photo_data)
+        INSERT INTO photos (album_id, photo_url)
         VALUES (albumId, CASE WHEN counter % 3 = 1 THEN '/static/images/ThriftMe_logo.png'  -- ThriftMe_logo.png
                              WHEN counter % 3 = 2 THEN '/static/images/profileTemp.png'  -- callus.png
                              ELSE '/static/images/callus.png' END)
@@ -122,7 +122,7 @@ SELECT
     cp.post_date,
     cpc.comment_content,
     COUNT(cpl.user_id) AS like_count,
-    ph.photo_data
+    ph.photo_url
 FROM
     community_posts cp
 JOIN
@@ -136,7 +136,7 @@ LEFT JOIN
 WHERE
     cp.community_post_id = :community_post_id -- Replace with the desired community_post_id
 GROUP BY
-    cp.community_post_id, cp.post_content, cp.post_date, cpc.comment_content, ph.photo_data;
+    cp.community_post_id, cp.post_content, cp.post_date, cpc.comment_content, ph.photo_url;
 
 
 select * from photos;
