@@ -1,16 +1,16 @@
-from flask import Blueprint, render_template, request,session,redirect,jsonify,url_for
-from sqlalchemy import asc,func,Subquery
+from flask import Blueprint, render_template, request,session,redirect,jsonify,url_for,abort
+from sqlalchemy import asc,func,exists
 import pickle
-
 from ..models.pipeline import *
-community = Blueprint('community', __name__)
+
+community = Blueprint('community', __name__,template_folder='templates',static_folder='static')
 
 
 batch_limit = 9 #9 per batch is ideal since the community page will generate 3x3 grids at a time
 page_num = 1 #start at one for the page number then increment on each request
 total_limit = 33
 
-#just to test infinite scrolling
+#generate posts from database is kind of janky but works well enough
 def generate_data():
     global page_num
     
@@ -24,9 +24,7 @@ def generate_data():
         print('problematic')
         return
     
-
     ##Query to get just the post content, date, and photo_url
-    ##TODO add likes and comments to the post
     temp = (db.session.query(
         CommunityPost.post_content,
         CommunityPost.community_post_id,
@@ -39,17 +37,18 @@ def generate_data():
     .all()
     )
     
-    #convert to a list of tuples that have objects in them kinda like [(CommunityPost(),Photo()),...]
+    #cast to tuples so json won't complain
     processed_temp = [tuple(row) for row in temp if not(row is None)]
 
 
     #add the batch of posts to the total amount of posts the user has generated
     #set operation for lazy data integrity may unsort the list
     community_data.extend(list(set(processed_temp))) 
-    byte_length = pickle.dumps(community_data)
+
+    #test byte length if too many end up in the cookie data everything gets deleted
+    byte_length = len(pickle.dumps(community_data))
     print(byte_length)
-    for c in community_data:
-         print(f"\n{len(c[2])}\n")
+
     #IMPORTANT update the session data
     session['community_data'] = community_data
 
@@ -60,7 +59,6 @@ def generate_data():
 
 @community.route('/community') 
 def community_page():
-
 
     username = session.get('username')
     community_data = session.get('community_data')
@@ -78,10 +76,11 @@ def community_page():
         print(full_set)
         return  render_template('community.html', community_data=full_set)
     else:
+        #if not in a session, kick them out
         return redirect('/')
 
 
-#Send data to the webpage
+#get generated data and append to the end of the webpage
 @community.route('/get_data')
 def more_posts():
 
@@ -91,7 +90,7 @@ def more_posts():
     if username not in session.values():
         return redirect('/')
     
-    #if the user hit the psot limit then yell at the javascript on the page 
+    #if the user hit the post limit then yell at the javascript on the page 
     if len(community_data) >= total_limit:
         return 'STOP'
     else:
@@ -99,12 +98,25 @@ def more_posts():
         return  jsonify ({'html': render_template('community_posts_batch.html', temp=temp)})
     
 
-
 #Get a single instance of a community post
 #It is atrocious but who cares
-#TODO link likes and comments to the community post and add design elements
+#TODO add design elements
 @community.route('/community_post/<int:community_post_id>',methods=['POST','GET'])
 def community_post_(community_post_id):
+
+
+    username = session.get('username')
+    curr_user = Users.get_by_username(username)
+    post = CommunityPost.get_by_id(community_post_id=community_post_id)
+
+    if not (username or user) or username not in session.values():
+        return redirect('/')
+    
+    #check if the current user is the owner of the post
+    owner_flag = True if post.get_owner_id() == curr_user.get_id() else False
+    curr_username = curr_user.get_username()
+    
+
 
     #query to get post content, album, and photo data
     post_content = (db.session.query(
@@ -132,19 +144,109 @@ def community_post_(community_post_id):
     .all()
     )
         
+
+    #check and see if the current user has liked the post
+    user = Users.get_by_username(username)
+    like_check = db.session.query(exists().where(
+                        community_post_likes.c.user_id == user.get_id(),
+                        community_post_likes.c.community_post_id == community_post_id
+    )).scalar()
     
-    #if likes and comments is not null replace the user_id with their actual username
+    
+    #if likes and comments is null set like count to 0
     if likes_comments:
         like_count = likes_comments[0][1]
-        likes_comments = [(x,y ,Users.get_username_by_id(int(z))) for x,y,z in likes_comments]
-        print(likes_comments)
+    else:
+        like_count = 0
+
+    #swap user_id with the username
+    likes_comments = [(x,y ,Users.get_username_by_id(int(z))) for x,y,z in likes_comments]
+
     
     #send all of the data to the html page
     return render_template('community_singleton.html',
-                           community_post_id=community_post_id,
-                           post_content=post_content[0],
-                           album_id=post_content[1],
-                           photo_url=post_content[2],
+                           community_post_id = community_post_id,
+                           post_content = post_content[0],
+                           album_id = post_content[1],
+                           photo_url = post_content[2],
                            comments_and_likes = likes_comments,
-                           likes = like_count)
+                           likes = like_count,
+                           owner = owner_flag,
+                           curr_username = curr_username,
+                           liked = like_check)
 
+
+
+
+#helps user like and unlike post
+@community.route('/community_like', methods = ['POST'])
+def community_like():
+
+    username = session.get('username')
+
+    
+    post_id = request.form.get("community_post_id")
+    username = session.get('username')
+    user = Users.get_by_username(username=username)
+    
+    #check if like exists
+    like_check = db.session.query(exists().where(
+                        community_post_likes.c.user_id == user.get_id(),
+                        community_post_likes.c.community_post_id == post_id
+    )).scalar()
+     
+
+    if like_check:
+        #this generates a sql script that will be run by the database
+        delete_instance = community_post_likes.delete().where(
+                community_post_likes.c.user_id == user.get_id(),
+                community_post_likes.c.community_post_id == post_id
+             )
+        
+        #execute and commit then refresh the page
+        db.session.execute(delete_instance)
+        db.session.commit()
+
+        return redirect(url_for('community.community_post_',community_post_id=post_id ,_method='POST'))
+        
+    else:
+        like_instance = community_post_likes.insert().values(
+            user_id = user.get_id(),
+            community_post_id=post_id
+        )
+        
+        db.session.execute(like_instance)
+        db.session.commit()
+        
+        return redirect(url_for('community.community_post_',community_post_id=post_id ,_method='POST'))
+
+
+
+    
+@community.route('/community_comment', methods = ['POST','GET'])
+def community_comment():
+
+
+    comment = request.form.get('comment')
+    username = request.form.get('curr_username')
+    community_post_id = request.form.get('community_post_id')
+
+    #check for None type anything
+    if (username not in session.values()) or ((username or comment) is None ):
+        return abort(405)
+    
+    elif comment == '':
+        return abort(405)
+    
+    else:
+        
+        user = Users.get_by_username(session.get('username'))
+        #create new comment object
+        comment = CommunityPostComment(user_id = user.get_id(),community_post_id = community_post_id, comment_content=comment)
+
+        db.session.add(comment)
+        db.session.commit()
+        
+        #refresh the page with new information
+        return redirect(url_for('community.community_post_',community_post_id=community_post_id ,_method='POST'))
+    

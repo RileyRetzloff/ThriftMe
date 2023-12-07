@@ -4,10 +4,9 @@ from dotenv import load_dotenv
 from .database import *
 from sqlalchemy import text
 from flask_bcrypt import Bcrypt
-from flask_uploads import UploadSet, configure_uploads
+from flask_uploads import  configure_uploads
 from .config import photos
-from werkzeug.utils import secure_filename
-from werkzeug.datastructures import  FileStorage
+
 
 def create_app():
     app = Flask(__name__)
@@ -26,6 +25,7 @@ def create_app():
     app.config['SQLAlCHEMY_ECHO'] = True
     app.config['SECRET_KEY'] = 'apples'
     app.config['SESSION_COOKIE_PATH'] = '/'
+    app.config['STATIC_FOLDER'] = 'static'
 
     db.init_app(app)
     bcrypt.init_app(app)

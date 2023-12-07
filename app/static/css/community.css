@@ -70,3 +70,36 @@
     padding: var(--padding-xs);
     margin: var(--margin-xs);
 }
+
+
+
+
+.like-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+#like-image {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+
+.custom-button1 {
+
+    /* Set the desired background color */
+    background-color: var(--button-Tangerine);
+    /* Replace with your preferred color code */
+
+
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 5px 5px;
+
+
+
+    font-size: 15px;
+}

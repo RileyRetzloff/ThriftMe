@@ -51,9 +51,11 @@ class Users(db.Model):
     def get_id(self):
         return self.user_id
     
-    #simple lookup using query id, returns none if not in db
+    def get_access(self):
+        return self.public_access
+    
+    #simple lookup using query, returns none if not in db
     def get_by_username(username):
-        
         usr_instance = Users.query.filter_by(username=username).first()
         return usr_instance 
 
@@ -216,9 +218,7 @@ followers = db.Table(
 
 
 
-"""
-TODO Implement the listing and community models and tables
-"""
+
 
 """
 Community posts-similar to post and listing but can hold refrence to a listing if needed
@@ -235,6 +235,17 @@ class CommunityPost(db.Model):
     post_date = db.Column(db.TIMESTAMP, default=datetime.utcnow, nullable=False)
 
 
+    ##getters for to make life better 
+    def get_by_id(community_post_id):
+
+        return CommunityPost.query.filter_by(community_post_id=community_post_id).first()
+
+    def get_id(self):
+        return self.community_post_id
+    
+    def get_owner_id(self):
+        return self.user_id
+    
     def __str__(self) -> str:
         return (f"community_post_id: {self.community_post_id}\n"
                 f"post_content: {self.post_content}\n"
@@ -252,7 +263,20 @@ class CommunityPostComment(db.Model):
     comment_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
 
 
+    def __init__(self,user_id, community_post_id,comment_content):
+        self.user_id = user_id
+        self.community_post_id = community_post_id
+        self.comment_content = comment_content
 
+
+    def __str__(self) -> str:
+        return (f"community_post_id: {self.community_post_id}\n"
+                f"comment_content: {self.comment_content}\n"
+                f"comment_date: {self.comment_date}\n"
+                f"comment owner: {Users.get_username_by_id(self.user_id)}\n")
+            
+
+#I don't like these
 community_post_likes = db.Table(
     'community_post_likes', 
    db.Column('user_id',db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True),

@@ -2,24 +2,23 @@
 
 {% block head %}
 
-<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js" integrity="sha384-oEa8+2GX7lSJZM8s0z85K5JVFiKuO+6t9mafcGd5Jz9urXdr8+flJ2oBd46LO5ww" crossorigin="anonymous"></script>
 <!-- above is the masonry cdn for bootstrap, it will make the community page look like an instagram explore page and also responsive-->
 <link rel="stylesheet" href="/static/css/community.css">
-<!--<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    --->
+<script src="https://kit.fontawesome.com/44f358a1d7.js" crossorigin="anonymous"></script>
+
+
 {% endblock %}
 {% block content %}
 
-<!--TODO implement user sessions so content can be dynamiclly generated when they scroll at the bottom of the page
-and limit the amount of posts so that get requests don't get to be too much
-The main issue is that -->
+
 <h2>
-    Post Content: {{post_content}}
+    {{post_content}}
 </h2>
 
 <hr class = "border border-muted border-1 opacity-75">
 
-<div class="card rounded mr-2 p-3 bg-light text-secondary">
+<div class="card rounded  mx-3 bg-light text-secondary">
     <div class="row justify-content-center">
         <div class = "col-md-6">
             <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
@@ -39,24 +38,61 @@ The main issue is that -->
     </div>
 </div>  
 
-
 <div>
-    <h3>Likes: {{likes}}</h3>
+    {% if owner == true %}
+    <form action="/delete_community_post" method="post">
+        <div class="mt-3 text-secondary">
+            
+            <button class="custom-button2 mb-2 rounded text-white">Delete Post</button>
+        </div>
+    </form>
+    {% else %}
+
+        
+    <div>
+        <form action = '/community_like' method = 'POST'>
+        {% if liked == true%}
+            <button class = "btn">
+                <i class="fa-solid fa-heart"></i>
+            </button>
+                <span id = "like-count">{{likes}}</span>
+        {% else %}
+            <button class="btn">
+                <i class="fa-regular fa-heart"></i>
+            </button>
+                <span id = "like-count">{{likes}}</span>
+        {% endif %}
+
+            <input type = "hidden" name="community_post_id" value="{{community_post_id}}">
+
+        </form>
+    </div>
+    {% endif %}
+
     <h3>Comments {{com}}</h3>
     {% for tuple in comments_and_likes %}
 
-    <h4>
-       {{tuple[2]}}: {{tuple[0]}}
-    </h4>
-    {% endfor %}
-</div>
-<!--<img src ="{{photo_url}}" alt="pic" witdh="400" height="400">-->
-
-
-<h2>
-   Album ID:  {{album_id}}
-</h2>
+    <div class = "comment-container">
+        <h4>
+            <a href="{{url_for('user.user_singleton',username = tuple[2]|string,_method='POST')}}">
+                {{tuple[2]}}: {{tuple[0]}}
+            </a>
+        </h4>
+    </div>
     
+    {% endfor %}
+
+    <form action="/community_comment" method ="POST">
+    <div class="form-group row">
+        <button for="inputPassword" class="col-sm-2 custom-button1 rounded ml-3 ">Comment</button>
+        <div class="mr-2 col-sm-8">
+          <input type="text"  name ="comment" value="" >
+          <input type = "hidden" name="curr_username" value="{{curr_username}}">
+          <input type = "hidden" name="community_post_id" value="{{community_post_id}}">
+        </div>
+      </div>
+    </form>
+</div>
 
 
 {% endblock %}

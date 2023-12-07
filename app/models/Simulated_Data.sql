@@ -138,8 +138,3 @@ WHERE
 GROUP BY
     cp.community_post_id, cp.post_content, cp.post_date, cpc.comment_content, ph.photo_url;
 
-
-select * from photos;
-select * from community_post_comments
-
-select * from photos;

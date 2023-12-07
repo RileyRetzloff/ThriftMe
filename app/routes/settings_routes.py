@@ -101,18 +101,6 @@ def change_account_info():
     else:
         return redirect('/')
 
-
-    
-
-
-
-
-
-    
-    
-
-
-
 #makes half of the password 
 def mask_first_half(input_string):
     length = len(input_string)
