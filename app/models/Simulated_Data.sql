@@ -7,6 +7,7 @@ ALTER SEQUENCE photos_photo_id_seq RESTART WITH 1;
 ALTER SEQUENCE albums_album_id_seq RESTART WITH 1;
 ALTER SEQUENCE community_posts_community_post_id_seq RESTART WITH 1;
 
+
 --Dummy users for test data
 INSERT INTO users (username, password, email, profile_picture, public_access)
 VALUES
@@ -19,24 +20,6 @@ select * from community_posts;
 select * from photos;
 select * from albums;
 
--- TESTSCRIPT: Insert 100 albums with identical photos
-INSERT INTO albums (user_id, album_name)
-SELECT 3, 'Community Album ' || generate_series(1, 100);
-
--- Insert 100 identical photos
-INSERT INTO photos (album_id, photo_url)
-SELECT
-    a.album_id,
-    '/static/images/ThriftMe_logo.png'
-FROM albums a;
-
--- Insert 100 community posts referencing different albums with identical photos
-INSERT INTO community_posts (user_id, post_content, album_id)
-SELECT
-    3,
-    'Community Post ' || a.album_id,
-    a.album_id
-FROM albums a;
 
 -- Verify the inserted community posts
 SELECT * FROM community_posts;
@@ -78,7 +61,7 @@ BEGIN
     -- Loop to create 50 community posts
     counter := 1;
 
-    WHILE counter <= 50
+    WHILE counter <= 10
     LOOP
         -- Insert community post
         INSERT INTO community_posts (user_id, post_content, post_date)
@@ -138,3 +121,7 @@ WHERE
 GROUP BY
     cp.community_post_id, cp.post_content, cp.post_date, cpc.comment_content, ph.photo_url;
 
+
+select * from community_posts;
+select * from albums;
+select * from photos;

@@ -235,6 +235,12 @@ class CommunityPost(db.Model):
     post_date = db.Column(db.TIMESTAMP, default=datetime.utcnow, nullable=False)
 
 
+
+    def __init__(self,user_id,album_id,post_content):
+        self.user_id = user_id
+        self.album_id = album_id
+        self.post_content = post_content
+        
     ##getters for to make life better 
     def get_by_id(community_post_id):
 
@@ -246,6 +252,8 @@ class CommunityPost(db.Model):
     def get_owner_id(self):
         return self.user_id
     
+    def get_count():
+        return db.session.query(CommunityPost.user_id).count()
     def __str__(self) -> str:
         return (f"community_post_id: {self.community_post_id}\n"
                 f"post_content: {self.post_content}\n"

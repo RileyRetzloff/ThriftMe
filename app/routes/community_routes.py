@@ -1,22 +1,22 @@
 from flask import Blueprint, render_template, request,session,redirect,jsonify,url_for,abort
-from sqlalchemy import asc,func,exists
+from sqlalchemy import desc,func,exists
 import pickle
 from ..models.pipeline import *
+from ..utils import upload_file
 
 community = Blueprint('community', __name__,template_folder='templates',static_folder='static')
 
 
-batch_limit = 9 #9 per batch is ideal since the community page will generate 3x3 grids at a time
+batch_limit = 6 #9 per batch is ideal since the community page will generate 3x3 grids at a time
 page_num = 1 #start at one for the page number then increment on each request
-total_limit = 33
+total_limit =36
 
 #generate posts from database is kind of janky but works well enough
 def generate_data():
     global page_num
-    
-    ## offset to increment the query for the posts
+    ## offset to increment the query for the posts is a bit unstable
     offset = (page_num-1) * batch_limit
-    page_num+=1
+    page_num+=1    
     community_data = session.get('community_data')
 
     #check for problematic comunity data
@@ -32,31 +32,30 @@ def generate_data():
     )
     .join(Album, CommunityPost.album_id == Album.album_id)
     .join(Photo, Album.album_id == Photo.album_id)
-    .order_by(asc(CommunityPost.post_date))
+    .order_by(desc(CommunityPost.community_post_id))
     .offset(offset).limit(batch_limit)
     .all()
     )
     
     #cast to tuples so json won't complain
-    processed_temp = [tuple(row) for row in temp if not(row is None)]
+    processed_temp = ([tuple(row) for row in temp if not(row is None)])
 
 
     #add the batch of posts to the total amount of posts the user has generated
     #set operation for lazy data integrity may unsort the list
-    community_data.extend(list(set(processed_temp))) 
+    community_data.extend((list(set(processed_temp))))
 
     #test byte length if too many end up in the cookie data everything gets deleted
     byte_length = len(pickle.dumps(community_data))
     print(byte_length)
 
     #IMPORTANT update the session data
-    session['community_data'] = community_data
+    session['community_data'] = sorted(community_data,reverse=True)
 
     #return the batch when ONLY when below the limit
     return processed_temp
 
     
-
 @community.route('/community') 
 def community_page():
 
@@ -67,13 +66,12 @@ def community_page():
     #handles if the user has clicked off the page and decided to return before the limit
     if username in session.values() and len(community_data) < total_limit:
         generate_data()
-        return render_template('community.html', community_data = community_data)
+        return render_template('community.html', community_data = (community_data))
     
     #if the user returns to the page just serve them back the posts that they generated
     elif username in session.values() and len(community_data) >= total_limit:
         
         full_set = list(set(community_data))
-        print(full_set)
         return  render_template('community.html', community_data=full_set)
     else:
         #if not in a session, kick them out
@@ -92,9 +90,10 @@ def more_posts():
     
     #if the user hit the post limit then yell at the javascript on the page 
     if len(community_data) >= total_limit:
+        print("stop")
         return 'STOP'
     else:
-        temp = generate_data()
+        temp = list(set(generate_data()))
         return  jsonify ({'html': render_template('community_posts_batch.html', temp=temp)})
     
 
@@ -163,12 +162,14 @@ def community_post_(community_post_id):
     likes_comments = [(x,y ,Users.get_username_by_id(int(z))) for x,y,z in likes_comments]
 
     
+    if post_content is None:
+        return f"<h1>{post_content} and {community_post_id}</h1>"
     #send all of the data to the html page
     return render_template('community_singleton.html',
                            community_post_id = community_post_id,
-                           post_content = post_content[0],
-                           album_id = post_content[1],
-                           photo_url = post_content[2],
+                           post_content = post_content.post_content,
+                           album_id = post_content.album_id,
+                           photo_url = post_content.photo_url,
                            comments_and_likes = likes_comments,
                            likes = like_count,
                            owner = owner_flag,
@@ -226,7 +227,6 @@ def community_like():
 @community.route('/community_comment', methods = ['POST','GET'])
 def community_comment():
 
-
     comment = request.form.get('comment')
     username = request.form.get('curr_username')
     community_post_id = request.form.get('community_post_id')
@@ -250,3 +250,89 @@ def community_comment():
         #refresh the page with new information
         return redirect(url_for('community.community_post_',community_post_id=community_post_id ,_method='POST'))
     
+
+
+
+@community.route('/new_community_post', methods = ['POST'])
+def new_post():
+    username = session.get('username')
+
+    return render_template('new_community_post.html')
+    
+
+
+@community.route('/create_post',methods=['POST'])
+def create_post():
+
+    username = session.get('username')
+    
+
+    if username not in session.values() or username is None:
+        abort(405)
+
+    user = Users.get_by_username(username)
+    caption = request.form.get('post-title')
+    photo_stream = request.files.getlist('upload-pictures')
+
+    album = Album(user.get_id(),f"{username}'s album")
+    db.session.add(album)
+    db.session.commit()
+    album_id = album.album_id
+
+    community_post = CommunityPost(user_id = user.get_id(),album_id=album_id,post_content=caption)
+    db.session.add(community_post)
+    db.session.commit()
+
+    for photo in photo_stream:
+        if photo and photo.filename:
+            photo_url = upload_file(photo)
+            if photo_url:
+                picture = Photo(album_id=album_id,photo_url=url_for('static',filename = f"user_images/{photo_url}"))
+                db.session.add(picture)
+                db.session.commit()
+    try:
+        pass
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        db.session.rollback()
+
+    data = session.get('community_data')
+
+    data.extend([(community_post.post_content, community_post.community_post_id, picture.photo_url)])
+    session['community_data'] = sorted(data,reverse=True)
+
+    return redirect(url_for('community.community_post_', community_post_id=community_post.get_id()))
+
+
+
+@community.route('/delete_post/<int:community_post_id>',methods=['GET','POST'])
+def delete_post(community_post_id):
+    
+
+    post_content = (db.session.query(
+        CommunityPost.post_content,
+        CommunityPost.community_post_id,
+        Photo.photo_url
+    )
+    .join(Album, CommunityPost.album_id == Album.album_id)
+    .join(Photo, Album.album_id == Photo.album_id)
+    .filter(CommunityPost.community_post_id == community_post_id)
+    .first()
+    )
+
+
+    community_post = CommunityPost.get_by_id(community_post_id=community_post_id)
+
+        
+    community_data = session.get('community_data')
+
+    
+    community_data.remove(post_content)
+
+    session['community_data'] = community_data
+    
+
+    db.session.delete(community_post)
+    db.session.commit()
+    return redirect('/community')
+
