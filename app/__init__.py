@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from .database import *
 from sqlalchemy import text
 from flask_bcrypt import Bcrypt
-from flask_uploads import  configure_uploads
+from flask_uploads import configure_uploads
 from .config import photos
 
 
