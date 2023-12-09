@@ -20,16 +20,11 @@ def create_app():
     app.secret_key = os.getenv('APP_SECRET_KEY', 'apple')
 
     #database connection
-    if os.getenv('FLASK_ENV') == 'testing':
-        app.config.from_object(TestingConfig)
-        app.app_context().push()
-    else:
-        app.config["SQLALCHEMY_DATABASE_URI"] = \
-        f'postgresql://{os.getenv("DB_USERNAME")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}'
-        app.config['SQLAlCHEMY_ECHO'] = True
-        app.config['SECRET_KEY'] = 'apples'
-        app.config['SESSION_COOKIE_PATH'] = '/'
-        app.config['STATIC_FOLDER'] = 'static'
+    app.config["SQLALCHEMY_DATABASE_URI"] = \
+    f'postgresql://{os.getenv("DB_USERNAME")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("DB_NAME")}'
+    app.config['SQLAlCHEMY_ECHO'] = True
+    app.config['SECRET_KEY'] = 'apples'
+    app.config['SESSION_COOKIE_PATH'] = '/'
 
     db.init_app(app)
     bcrypt.init_app(app)

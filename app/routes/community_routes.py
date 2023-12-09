@@ -39,6 +39,47 @@ def generate_data():
     
     #cast to tuples so json won't complain
     processed_temp = ([tuple(row) for row in temp if not(row is None)])
+from flask import Blueprint, render_template, request,session,redirect,jsonify,url_for,abort
+from sqlalchemy import desc,func,exists
+import pickle
+from ..models.pipeline import *
+from ..utils import upload_file
+
+community = Blueprint('community', __name__,template_folder='templates',static_folder='static')
+
+
+batch_limit = 6 #9 per batch is ideal since the community page will generate 3x3 grids at a time
+page_num = 1 #start at one for the page number then increment on each request
+total_limit =36
+
+#generate posts from database is kind of janky but works well enough
+def generate_data():
+    global page_num
+    ## offset to increment the query for the posts is a bit unstable
+    offset = (page_num-1) * batch_limit
+    page_num+=1    
+    community_data = session.get('community_data')
+
+    #check for problematic comunity data
+    if community_data is None:
+        print('problematic')
+        return
+    
+    ##Query to get just the post content, date, and photo_url
+    temp = (db.session.query(
+        CommunityPost.post_content,
+        CommunityPost.community_post_id,
+        Photo.photo_url
+    )
+    .join(Album, CommunityPost.album_id == Album.album_id)
+    .join(Photo, Album.album_id == Photo.album_id)
+    .order_by(desc(CommunityPost.community_post_id))
+    .offset(offset).limit(batch_limit)
+    .all()
+    )
+    
+    #cast to tuples so json won't complain
+    processed_temp = ([tuple(row) for row in temp if not(row is None)])
 
 
     #add the batch of posts to the total amount of posts the user has generated
