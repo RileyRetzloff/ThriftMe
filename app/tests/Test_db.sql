@@ -1,11 +1,8 @@
-
-
 --Test database we can create a diff instance in datagrip with
 -- This can be easily created and wiped over and over
 -- tables are identical to the ones in the most current commit so it works with models.py
 
 create database test_thriftme;
-
 
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
@@ -25,8 +22,6 @@ CREATE TABLE albums (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
 
-
-
 -- Table to store photos
 --Albums will rely on this table
 -- Run the following commands to fix your local DB:
@@ -38,7 +33,6 @@ CREATE TABLE photos (
     photo_url TEXT,
     FOREIGN KEY (album_id) REFERENCES albums(album_id) ON DELETE CASCADE
 );
-
 
 -- Posts Created by users and holds text
 --References album
@@ -65,12 +59,6 @@ CREATE TABLE listings (
     FOREIGN KEY (album_id) REFERENCES albums(album_id) ON DELETE SET NULL
 );
 
---forgot to add photos to listings lol PLEASE RUN THIS
-ALTER TABLE listings
-ADD COLUMN album_id INT,
-ADD FOREIGN KEY (album_id) REFERENCES albums(album_id) ON DELETE SET NULL;
-
-
 -- Represents community posts that can reference albums and a reference to listings if needed
 CREATE TABLE community_posts (
     community_post_id SERIAL PRIMARY KEY,
@@ -92,7 +80,6 @@ CREATE TABLE followers (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (follower_id) REFERENCES users(user_id) ON DELETE CASCADE
 );
-
 
 -- Different likes tables across posts for easier queries
 
@@ -122,8 +109,6 @@ CREATE TABLE listing_likes (
     FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (listing_id) REFERENCES listings(listing_id) ON DELETE CASCADE
 );
-
-
 
 ---Separate comments tables for easier queries
 -- Comments on posts
