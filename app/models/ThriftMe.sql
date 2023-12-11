@@ -32,11 +32,6 @@ CREATE TABLE photos (
     photo_url TEXT,
     FOREIGN KEY (album_id) REFERENCES albums(album_id) ON DELETE CASCADE
 );
-ALTER TABLE photos
-ALTER COLUMN photo_data TYPE TEXT;
-
-ALTER TABLE photos
-RENAME COLUMN photo_data TO  photo_url;
 
 -- Posts Created by users and holds text
 --References album
