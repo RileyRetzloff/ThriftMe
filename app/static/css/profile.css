@@ -52,9 +52,7 @@
     text-align: center;
     justify-content: space-between;
     align-items: center;
-    margin-top: var(--margin-md);
-    margin-right: var(--margin-md);
-    margin-bottom: var(--margin-md);
+    margin:  var(--margin-md);
 }
 
 .profile-info {
@@ -63,6 +61,8 @@
     padding: 20px;
     border-radius: 12px;
     background-color: var(--background-gray-light);
+    display: flex;
+    flex-direction: column;
 }
 
 .profile-image {
@@ -72,6 +72,17 @@
     /*Adjust values when implementing dynamic html*/
     border-radius: 50%;
     padding: 8px;
+}
+
+.settings-profile-buttons
+{
+    display:flex;
+    flex-direction: column;
+}
+
+.settings-link
+{
+    margin-top:25vh;
 }
 
 .profile-bio {
@@ -92,7 +103,7 @@
 }
 
 .edit-profile-button {
-    padding: 10px;
+    padding: 8px;
     background-color: #C8553D;
     /* Updated background color */
     color: #fff;

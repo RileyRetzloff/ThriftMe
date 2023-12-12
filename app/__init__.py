@@ -6,7 +6,7 @@ from sqlalchemy import text
 from flask_bcrypt import Bcrypt
 from flask_uploads import configure_uploads
 from .config import photos
-
+from werkzeug.utils import secure_filename
 
 def create_app():
     app = Flask(__name__)

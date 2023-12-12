@@ -33,7 +33,7 @@ class Users(db.Model):
     #     self.email = email
     #     self.password = password
     #     self.public_access = True
-    #     #can omit later since there is no logic to create a username or uplad profile picture right now
+    #     #can omit later since there is no logic to create a username or upload profile picture right now
     #     self.username = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=random.randint(5,20)))
     #     self.profile_picture = binascii.b2a_base64(os.urandom(17))
     
@@ -48,6 +48,9 @@ class Users(db.Model):
     def get_username(self):
         return self.username
     
+    def get_username_session():
+        return  db.session.query(Users.username)
+
     def get_id(self):
         return self.user_id
     
@@ -65,7 +68,10 @@ class Users(db.Model):
             return usr_instance.get_username()
         else:
             return None
-    
+        
+    def get_user_profile_pic():
+        pass
+        
     ##test code to see if user is created
     def __str__(self) -> str:
         return (f"user_id: {self.user_id}\n"

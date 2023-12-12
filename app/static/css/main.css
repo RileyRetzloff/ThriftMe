@@ -285,3 +285,16 @@ body {
 .listing-card-description {
     margin-top: var(--margin-xs);
 }
+
+.profile-button
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+    background-color: var(--background-gray-dark);
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    padding: 8px;
+}
