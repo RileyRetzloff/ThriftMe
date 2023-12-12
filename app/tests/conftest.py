@@ -7,10 +7,10 @@ from ..database import db
 from sqlalchemy import text
 
 
+#Flag application for testing and clear database before and after each test
 @pytest.fixture()
 def app(): 
     
-    #flag for testing
     os.environ['FLASK_ENV'] = 'testing'
     app = create_app()
     clear_db()
@@ -23,14 +23,18 @@ def app():
 def client(app):
     return app.test_client()
 
+#extra client to simulate multiple users
+@pytest.fixture()
+def client_2(app):
+    return app.test_client()
+
 
 @pytest.fixture()
 def runner(app):
     return app.test_cli.runner()
 
 
-#clear database function
-
+#run SQL script to clear the database
 def clear_db():
    
     delete_command = """

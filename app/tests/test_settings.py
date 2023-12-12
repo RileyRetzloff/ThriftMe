@@ -5,15 +5,13 @@ from app.models.pipeline import Users
 from app.database import bcrypt
 
 
-##Testing endpoints
-
+#Test creating a user account then deleting that account
 def test_adding_and_deleting_user(client):
     username = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(10))
     email = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5)) + '@' +''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
     password = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(8))
 
 
-    #send data to the create account endpoint
     client.post("/create", data = {'username': username, 'email': email, 'password': password})
     response = client.get('/settings')
 
@@ -27,7 +25,7 @@ def test_adding_and_deleting_user(client):
     assert Users.query.count() == 0
     assert Users.query.first() == None
    
-
+#Test the ability to read the users account info. 
 def test_read_user_data(client):
     username = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(10))
     email = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5)) + '@' +''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
@@ -41,7 +39,7 @@ def test_read_user_data(client):
     
 
 
-
+#Test updating the users data from what it was when the account was created.
 def test_update_user_data(client):
     username = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(10))
     email = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5)) + '@' +''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))
