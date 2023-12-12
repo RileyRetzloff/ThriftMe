@@ -37,7 +37,7 @@ def test_read_user_data(client):
     client.post("/create", data = {'username': username, 'email': email, 'password': password})
     response = client.get('/settings')
 
-    assert email.encode() and (b'Public' or b'Private') in response.data
+    assert b'*' and email.encode() and (b'Public' or b'Private') in response.data
     
 
 
@@ -59,7 +59,6 @@ def test_update_user_data(client):
     client.post('/edit', data = {'flag': 'change-email', 'email' : new_email})
     client.post('/edit', data= {'flag' : 'change-password', 'password' : new_password})
 
-    print(user.password)
     assert curr_access != user.get_access()
     assert new_email == user.email
     assert bcrypt.check_password_hash(user.password, new_password)

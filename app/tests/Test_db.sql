@@ -151,5 +151,3 @@ VALUES
     ('real_person_community', 'password3', 'user3@example.com', E'\\x89504e470d0a1a0a', true);
 
 
-
-select * from users;

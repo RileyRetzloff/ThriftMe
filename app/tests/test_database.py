@@ -11,7 +11,7 @@ def test_connection(client):
     inspector = inspect(db.engine)
     all_tables = inspector.get_table_names()
     
-    ##testing if it is switching to the test database when testing
+    ##testing if it is switching to the test database and that it is empty 
     assert db.engine.url.render_as_string(hide_password=False) == f'postgresql://{os.getenv("DB_USERNAME")}:{os.getenv("DB_PASSWORD")}@{os.getenv("DB_HOST")}:{os.getenv("DB_PORT")}/{os.getenv("TEST_DB_NAME")}'
     for table_name in all_tables:
         res = db.session.execute(text(f" select count(*) from {table_name};"))
@@ -19,7 +19,6 @@ def test_connection(client):
         assert count == 0
     
 
-#idk how to check the password
 def test_adding_user(client):
     username = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(10))
     email = ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5)) + '@' +''.join(random.choice(string.ascii_letters + string.digits) for _ in range(5))

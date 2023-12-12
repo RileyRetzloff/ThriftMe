@@ -280,6 +280,8 @@ def create_post():
     db.session.add(community_post)
     db.session.commit()
 
+    print(caption)
+    print (photo_stream)
     for photo in photo_stream:
         if photo and photo.filename:
             photo_url = upload_file(photo)
