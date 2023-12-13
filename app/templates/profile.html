@@ -14,14 +14,15 @@
     <div class="profile-layout">
         <div class="profile-info">
             <a href="/edit_profile"><button class="edit-profile-button button button-primary">Edit Profile</button></a>
-            <figure>
-                <div class="profile-pfp-container">
-                    <img src="../static/images/default-profile.png" alt="User profile" id="profile-pfp-img">
-                </div>
-                <figcaption><strong>{{username}}</strong></figcaption>
-            </figure>
-            <a class="settings-link" href="/settings">Settings</a>
-            <a href="/logout"><button class="logout-button">Logout</button></a>
+                <figure>
+                    <div class="profile-pfp-container">
+                        <img src="../static/images/default-profile.png" alt="User profile" id="profile-pfp-img">
+                    </div>
+                    <figcaption><strong>{{username}}</strong></figcaption>
+                </figure>
+                <!-- TODO if goated: add button to display followers/following -->
+                <a href="/logout"><button class="logout-button">Logout</button></a>
+                <a class="settings-link" href="/settings">Settings</a>
         </div>
         <div class="profile-listings"> <!-- TODO implement pull from server page and scrollbar css-->
             <h4>Your Listings</h4>

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session, flash
+from flask import Blueprint, render_template, request, redirect, session
 from ..models.pipeline import Users,db
 from ..utils import upload_file
 
@@ -8,7 +8,9 @@ profile = Blueprint('main', __name__)
 #################
 @profile.route('/profile', methods=['POST','GET'])
 def render_profile():
+    #return user to signup if user is not logged in i.e. username returns None
     username = session.get('username')
+    
     if username == None:
         print("No user is logged in.")
         return render_template('signup.html')
@@ -29,11 +31,18 @@ def render_profile_settings():
 def render_edit_profile_user():
     username = session.get('username')
     user = Users.get_by_username(username)
-    newUsername = request.form.get('newUsername')
-    user.username = newUsername
-    db.session.commit()
 
-    return redirect('/edit_profile')    
+    if request.method == 'POST':
+                
+        newUsername = request.form.get('newUsername')
+        
+        if newUsername and user is not None:
+            user.username = newUsername
+            db.session.commit()
+            session['username'] = newUsername
+        return redirect('/edit_profile')  
+
+    return render_template('edit_username_form.html', username=username)  
 
 ##################
 
