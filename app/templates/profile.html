@@ -2,14 +2,12 @@
 {% extends "template.html" %}
 
 {% block head %}
-<!-- <link rel="stylesheet" href="../static/css/<YOUR STYLESHEET HERE>"> -->
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<link rel="stylesheet" type="text/css" href="../static/css/profile.css">
 {% endblock %}
 
 {% block content %}
 
-<head>
-    <link rel="stylesheet" type="text/css" href="../static/css/profile.css">
-</head>
 <main>
     <div class="profile-layout">
         <div class="profile-info">
@@ -32,6 +30,7 @@
         </div>
         <div class="profile-listings"> <!-- TODO implement pull from server page and scrollbar css-->
             <h4>Your Listings</h4>
+
         </div>
     </div>
 </main>

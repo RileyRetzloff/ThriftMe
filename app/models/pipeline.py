@@ -36,7 +36,7 @@ class Users(db.Model):
     #     #can omit later since there is no logic to create a username or upload profile picture right now
     #     self.username = ''.join(random.choices('abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789', k=random.randint(5,20)))
     #     self.profile_picture = binascii.b2a_base64(os.urandom(17))
-    
+
 
     
     def __init__(self,username,email,pw_hash):
@@ -56,6 +56,9 @@ class Users(db.Model):
     
     def get_access(self):
         return self.public_access
+    
+    def get_listings(self):
+        return Listing.query.filter_by(user_id=self.user_id).all()
     
     #simple lookup using query, returns none if not in db
     def get_by_username(username):

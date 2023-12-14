@@ -14,7 +14,8 @@ def render_profile():
         return render_template('signup.html')
 
     user = Users.get_by_username(username)
-
+    bruh = user.get_listings()
+    print(bruh)
     if user is None:
         print(f"User {username} not found.")
         return render_template('signup.html')
