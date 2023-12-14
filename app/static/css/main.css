@@ -207,7 +207,10 @@ body {
     margin-right: var(--padding-md);
 }
 
-#pfp-img,
+#pfp-img {
+    width: 85%;
+}
+
 #custom-pfp-img {
     width: 95%;
     height: 95%;
