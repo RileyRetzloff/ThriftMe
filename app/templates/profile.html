@@ -32,18 +32,9 @@
         </div>
         <div class="profile-listings"> <!-- TODO implement pull from server page and scrollbar css-->
             <h4>Your Listings</h4>
-            <ul>
-                {% for listing in listings %}
-                <li>
-                    <strong>Title:</strong> {{ listing.title }}<br>
-                    <strong>Description:</strong> {{ listing.description }}<br>
-                    <strong>Price:</strong> {{ listing.price }}<br>
-                    <!-- Add more details as needed -->
-                </li>
-                <br>
-                {% endfor %}
-            </ul>
-
+            {% for listing in listings %}
+                {% include 'listing_card.html' %}
+            {% endfor %}
         </div>
     </div>
 </main>

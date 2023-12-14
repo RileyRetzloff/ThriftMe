@@ -12,24 +12,17 @@ def render_profile():
     if username is None:
         print("No user is logged in.")
         return render_template('signup.html')
-
-    user = Users.get_by_username(username)
-
-    listings = (db.session.query(
-        Listing.title,
-        Listing.listing_id,
-        Listing.description,
-        Listing.price,
-        Photo.photo_url,
-    ).join(Album,Listing.album_id == Album.album_id)
-    .join(Photo,Album.album_id == Photo.album_id).filter((Listing.user_id == user.user_id)).all())
     
-    if user is None:
-        print(f"User {username} not found.")
+    user = Users.get_by_username(username)
+    userid=None
+    if not isinstance(user,Users):
         return render_template('signup.html')
+    
+    userid=user.user_id
+    listings = Listing.query.filter_by(user_id = userid)
 
     print(f"User {username} is logged in.")
-    return render_template('profile.html', username=username, listings=listings )
+    return render_template('profile.html', username=username, listings=listings)
     
 ##################
 
