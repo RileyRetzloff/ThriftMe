@@ -93,7 +93,7 @@ def more_posts():
         print("stop")
         return 'STOP'
     else:
-        temp = generate_data()
+        temp = sorted(generate_data(), reverse=True)
         return  jsonify ({'html': render_template('community_posts_batch.html', temp=temp)})
     
 
