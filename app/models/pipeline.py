@@ -23,7 +23,7 @@ class Users(db.Model):
     username = db.Column(db.String(50), nullable=False)
     password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(100), nullable=False)
-    profile_picture = db.Column(db.LargeBinary)
+    profile_picture = db.Column(db.Text)
     public_access = db.Column(db.Boolean, nullable=False)
 
     

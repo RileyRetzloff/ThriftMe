@@ -32,9 +32,10 @@
         <h1 class="banner-user">{{session['username']}}</h1>
         {% else %}
         {% endif %}
-        {% if profile_picture %}
+
+        {% if session['profile_picture'] != none %}
         <a href="/profile" class="pfp-container">
-            <img src="data:image/jpeg;base64,{{ profile_picture }}" alt="custom profile" id="custom-pfp-img">
+            <img src="{{session['profile_picture']}}" alt="custom profile" id="custom-pfp-img">
         </a>
         {% else %}
         <a href="/profile" class="pfp-container">

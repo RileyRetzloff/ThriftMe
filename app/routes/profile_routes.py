@@ -1,8 +1,7 @@
-from flask import Blueprint, render_template, request, redirect, session, send_file
+from flask import Blueprint, render_template, request, redirect, session, url_for
 from ..models.pipeline import Users,db
 profile = Blueprint('main', __name__)
-import base64
-
+from ..utils import upload_file
 
 #################
 @profile.route('/profile', methods=['POST','GET'])
@@ -20,25 +19,15 @@ def render_profile():
         print(f"User {username} not found.")
         return render_template('signup.html')
 
-    profile_picture_base64 = None
-
-    if user.profile_picture is not None:
-        profile_picture_base64 = base64.b64encode(user.profile_picture).decode('utf-8')
-
     print(f"User {username} is logged in.")
-    return render_template('profile.html', username=username, profile_picture=profile_picture_base64)
+    return render_template('profile.html', username=username)
     
 ##################
 
 @profile.route('/edit_profile', methods=['POST','GET'])
 def render_profile_settings():
     username = session.get('username')
-    user = Users.get_by_username(username)
-    profile_picture_base64 = None
-    if user.profile_picture is not None:
-        profile_picture_base64 = base64.b64encode(user.profile_picture).decode('utf-8')
-
-    return render_template('profile_settings.html', username = username, profile_picture=profile_picture_base64)
+    return render_template('profile_settings.html', username = username)
 
 ##################
 
@@ -66,21 +55,23 @@ def render_edit_profile():
     username = session.get('username')
     user = Users.get_by_username(username)
     allowed_extensions = {'jpg', 'jpeg'}
-    profile_picture_base64 = None  # Default value
 
     if request.method == 'POST' and 'image' in request.files:
         new_pfp = request.files['image']
         if '.' in new_pfp.filename and new_pfp.filename.rsplit('.', 1)[1].lower() in allowed_extensions:
             # Update the user's profile picture in the database
-            user.profile_picture = new_pfp.read()
+            photo_url = upload_file(new_pfp)
+            full_url = url_for('static', filename = 'user_images/' + photo_url)
+            print(full_url)
+            user.profile_picture = full_url
             db.session.commit()
-
-            profile_picture_base64 = base64.b64encode(user.profile_picture).decode('utf-8')
+            session['profile_picture'] = user.profile_picture
+            return render_template('profile_settings.html', username=username)
 
         else:
-            return render_template('profile_settings.html', username=username, profile_picture=profile_picture_base64)
+            return render_template('profile_settings.html', username=username)
 
-    return render_template('profile_settings.html', username=username, profile_picture=profile_picture_base64)
+    return render_template('profile_settings.html', username=username)
 
 ##################
 
