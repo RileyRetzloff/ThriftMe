@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, redirect, session, url_for
-from ..models.pipeline import Users,db
+from ..models.pipeline import Users, db, Listing ,Photo,Album
 profile = Blueprint('main', __name__)
 from ..utils import upload_file
 
@@ -14,14 +14,22 @@ def render_profile():
         return render_template('signup.html')
 
     user = Users.get_by_username(username)
-    bruh = user.get_listings()
-    print(bruh)
+
+    listings = (db.session.query(
+        Listing.title,
+        Listing.listing_id,
+        Listing.description,
+        Listing.price,
+        Photo.photo_url,
+    ).join(Album,Listing.album_id == Album.album_id)
+    .join(Photo,Album.album_id == Photo.album_id).filter((Listing.user_id == user.user_id)).all())
+    
     if user is None:
         print(f"User {username} not found.")
         return render_template('signup.html')
 
     print(f"User {username} is logged in.")
-    return render_template('profile.html', username=username)
+    return render_template('profile.html', username=username, listings=listings )
     
 ##################
 
@@ -79,4 +87,5 @@ def render_edit_profile():
 @profile.route('/logout', methods=['POST','GET'])
 def logout():
     session.clear()
+    print(session)
     return render_template('index.html')

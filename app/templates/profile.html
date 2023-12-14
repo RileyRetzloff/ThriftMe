@@ -2,7 +2,9 @@
 {% extends "template.html" %}
 
 {% block head %}
-<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+<script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+    integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+    async></script>
 <link rel="stylesheet" type="text/css" href="../static/css/profile.css">
 {% endblock %}
 
@@ -12,24 +14,35 @@
     <div class="profile-layout">
         <div class="profile-info">
             <a href="/edit_profile"><button class="edit-profile-button button button-primary">Edit Profile</button></a>
-                <figure>
-                    {% if session['profile_picture'] != none %}
-                    <div class="profile-pfp-container">
-                        <img src="{{session['profile_picture']}}" alt="User profile" id="profile-custom">
-                    </div>
-                    {%else%}
-                    <div class="profile-pfp-container">
-                        <img src="../static/images/default-profile.png" alt="User profile" id="profile-pfp-img">
-                    </div>
-                    {% endif %}
-                    <figcaption><strong>{{username}}</strong></figcaption>
-                </figure>
-                <!-- TODO if goated: add button to display followers/following -->
-                <a href="/logout"><button class="logout-button">Logout</button></a>
-                <a class="settings-link" href="/settings">Settings</a>
+            <figure>
+                {% if session['profile_picture'] %}
+                <div class="profile-pfp-container">
+                    <img src="{{session['profile_picture']}}" alt="User profile" id="profile-custom">
+                </div>
+                {%else%}
+                <div class="profile-pfp-container">
+                    <img src="../static/images/default-profile.png" alt="User profile" id="profile-pfp-img">
+                </div>
+                {% endif %}
+                <figcaption><strong>{{username}}</strong></figcaption>
+            </figure>
+            <!-- TODO if goated: add button to display followers/following -->
+            <a href="/logout"><button class="logout-button">Logout</button></a>
+            <a class="settings-link" href="/settings">Settings</a>
         </div>
         <div class="profile-listings"> <!-- TODO implement pull from server page and scrollbar css-->
             <h4>Your Listings</h4>
+            <ul>
+                {% for listing in listings %}
+                <li>
+                    <strong>Title:</strong> {{ listing.title }}<br>
+                    <strong>Description:</strong> {{ listing.description }}<br>
+                    <strong>Price:</strong> {{ listing.price }}<br>
+                    <!-- Add more details as needed -->
+                </li>
+                <br>
+                {% endfor %}
+            </ul>
 
         </div>
     </div>

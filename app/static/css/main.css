@@ -447,7 +447,7 @@ body {
 .banner-user {
     font-size: xx-large;
     text-align: right;
-    color: var(--background-gray-light);
+    color: var(--background-light);
     margin-top: 3vh;
     margin-left: auto;
     margin-right: 2vw;

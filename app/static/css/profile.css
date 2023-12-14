@@ -7,7 +7,7 @@
     --dark-gray: #1A1A1A;
     --medium-gray: #505050;
     --light-gray: #b5b5b5;
-    --background-dark: #D9D9D9;
+    --background-dark: #d1d1d1;
     --background-light: #E6E6E6;
     --background-white: #F8F8F8;
 
@@ -43,7 +43,7 @@
 /* PROFILE PAGE */
 .profile-layout {
     font-size: var(--font-mdlg);
-    background-color: var(--background-gray-dark);
+    background-color: var(--background-dark);
     padding: 30px;
     border-radius: 12px;
     display: flex;
@@ -63,7 +63,7 @@
     width: 35%;
     padding: var(--padding-lg);
     border-radius: var(--radius-lg);
-    background-color: var(--background-gray-light);
+    background-color: var(--background-light);
     display: flex;
 }
 
@@ -75,7 +75,7 @@
     width: 150px;
     height: 150px;
     border-radius: 50%; /* Adjusted border-radius for a perfect circle */
-    background-color: var(--background-gray-light);
+    background-color: var(--background-white);
     border: var(--secondary-color-dark) 4px solid;
     padding: 3px;
     margin-bottom: 5px;
@@ -132,7 +132,7 @@ figcaption
     min-width: 10vw;
     padding: 2px 15px 2px 15px;
     margin-top:5px;
-    background-color: var(--background-gray-dark);
+    background-color: var(--background-dark);
     border-radius: var(--radius-lg);
 
 }
