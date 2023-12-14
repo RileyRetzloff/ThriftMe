@@ -206,11 +206,14 @@ body {
     background-color: var(--background-gray-light);
     border: var(--secondary-color-dark) 3px solid;
     margin-right: var(--padding-md);
-    padding-bottom: 3px;
 }
 
-#pfp-img {
-    width: 85%;
+#pfp-img,
+#custom-pfp-img {
+    width: 95%;
+    height: 95%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 /* SIDEBAR */
@@ -400,4 +403,13 @@ body {
     background-color: var(--background-gray-light);
     border-radius: var(--radius-md);
     padding: 1px var(--padding-md);
+}
+
+.banner-user {
+    font-size: xx-large;
+    text-align: right;
+    color: var(--background-gray-light);
+    margin-top: 3vh;
+    margin-left: auto;
+    margin-right: 2vw;
 }

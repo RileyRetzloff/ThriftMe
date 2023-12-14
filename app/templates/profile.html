@@ -15,9 +15,15 @@
         <div class="profile-info">
             <a href="/edit_profile"><button class="edit-profile-button button button-primary">Edit Profile</button></a>
                 <figure>
+                    {% if profile_picture %}
+                    <div class="profile-pfp-container">
+                        <img src="data:image/jpeg;base64,{{ profile_picture }}" alt="User profile" id="profile-custom">
+                    </div>
+                    {%else%}
                     <div class="profile-pfp-container">
                         <img src="../static/images/default-profile.png" alt="User profile" id="profile-pfp-img">
                     </div>
+                    {% endif %}
                     <figcaption><strong>{{username}}</strong></figcaption>
                 </figure>
                 <!-- TODO if goated: add button to display followers/following -->

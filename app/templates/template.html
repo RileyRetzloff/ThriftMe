@@ -28,9 +28,19 @@
                 <h1 class="ml-3 mt-3 header-text">ThriftMe</h1>
             </a>
         </div>
+        {%if session['username'] != none %}
+        <h1 class="banner-user">{{session['username']}}</h1>
+        {% else %}
+        {% endif %}
+        {% if profile_picture %}
         <a href="/profile" class="pfp-container">
-            <img src="../static/images/default-profile.png" alt="User profile" id="pfp-img">
+            <img src="data:image/jpeg;base64,{{ profile_picture }}" alt="custom profile" id="custom-pfp-img">
         </a>
+        {% else %}
+        <a href="/profile" class="pfp-container">
+            <img src="../static/images/default-profile.png" alt="default profile" id="pfp-img">
+        </a>
+        {% endif %}
     </div>
 
     <!-- Sidebar Wrapper -->
