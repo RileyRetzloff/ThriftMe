@@ -205,11 +205,17 @@ body {
     background-color: var(--background-white);
     border: var(--secondary-color-dark) 3px solid;
     margin-right: var(--padding-md);
-    padding-bottom: 3px;
 }
 
 #pfp-img {
     width: 85%;
+}
+
+#custom-pfp-img {
+    width: 95%;
+    height: 95%;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 /* SIDEBAR */
@@ -442,9 +448,31 @@ body {
     margin-top: var(--margin-xs);
 }
 
+.profile-button
+{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 10px;
+    background-color: var(--background-gray-dark);
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+    padding: 8px;
+}
+
 .link {
     font-size: 1rem;
     background-color: var(--background-light);
     border-radius: var(--radius-md);
     padding: 1px var(--padding-md);
+}
+
+.banner-user {
+    font-size: xx-large;
+    text-align: right;
+    color: var(--background-light);
+    margin-top: 3vh;
+    margin-left: auto;
+    margin-right: 2vw;
 }
