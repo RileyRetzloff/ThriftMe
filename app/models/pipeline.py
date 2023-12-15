@@ -4,6 +4,7 @@ from turtle import back
 from typing import Optional
 from ..database import db
 import random,binascii,os
+from sqlalchemy import func
 from datetime import datetime
 from dataclasses import dataclass
 #TODO make classes for the other tables
