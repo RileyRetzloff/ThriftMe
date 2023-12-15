@@ -223,6 +223,13 @@ body {
     border-radius: 50%;
 }
 
+#custom-pfp-img {
+    width: 95%;
+    height: 95%;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 /* SIDEBAR */
 .sidebar-wrapper {
     font-family: "Young Serif", serif;
@@ -453,7 +460,8 @@ body {
     margin-top: var(--margin-xs);
 }
 
-.profile-button {
+.profile-button
+{
     position: absolute;
     top: 0;
     right: 0;
@@ -473,7 +481,10 @@ body {
 }
 
 .banner-user {
-    font-size: var(--fontxl);
+    font-size: xx-large;
     text-align: right;
-    color: var(--dark-gray);
+    color: var(--background-light);
+    margin-top: 3vh;
+    margin-left: auto;
+    margin-right: 2vw;
 }

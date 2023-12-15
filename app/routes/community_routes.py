@@ -66,7 +66,7 @@ def community_page():
     #handles if the user has clicked off the page and decided to return before the limit has been reached
     if username in session.values() and len(community_data) < total_limit:
         generate_data()
-        return render_template('community.html', community_data = (community_data))
+        return render_template('community.html', community_data = community_data)
     
     #if the user returns to the page just serve them back the posts that they generated
     elif username in session.values() and len(community_data) >= total_limit:
@@ -94,8 +94,7 @@ def more_posts():
         return 'STOP'
     else:
         temp = generate_data()
-        return  jsonify ({'html': render_template('community_posts_batch.html', temp=temp)})
-    
+        return jsonify({'html': render_template('community_posts_batch.html', temp=temp)})    
 
 #Get a single instance of a community post
 #TODO add design elements
@@ -106,6 +105,9 @@ def community_post_(community_post_id):
     username = session.get('username')
     curr_user = Users.get_by_username(username)
     post = CommunityPost.get_by_id(community_post_id=community_post_id)
+
+    ##owner
+    owner_username =Users.get_username_by_id( post.get_owner_id())
 
     #kick the user out if they are not in the session
     if not (username or user) or username not in session.values():
@@ -170,7 +172,8 @@ def community_post_(community_post_id):
                            likes = like_count,
                            owner = owner_flag,
                            curr_username = curr_username,
-                           liked = like_check)
+                           liked = like_check,
+                           owner_username = owner_username)
 
 
 
