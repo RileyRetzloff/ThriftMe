@@ -93,7 +93,7 @@ def more_posts():
         print("stop")
         return 'STOP'
     else:
-        temp = generate_data()
+        temp = sorted(generate_data(), reverse=True)
         return  jsonify ({'html': render_template('community_posts_batch.html', temp=temp)})
     
 
@@ -106,6 +106,9 @@ def community_post_(community_post_id):
     username = session.get('username')
     curr_user = Users.get_by_username(username)
     post = CommunityPost.get_by_id(community_post_id=community_post_id)
+
+    ##owner
+    owner_username =Users.get_username_by_id( post.get_owner_id())
 
     #kick the user out if they are not in the session
     if not (username or user) or username not in session.values():
@@ -170,7 +173,8 @@ def community_post_(community_post_id):
                            likes = like_count,
                            owner = owner_flag,
                            curr_username = curr_username,
-                           liked = like_check)
+                           liked = like_check,
+                           owner_username = owner_username)
 
 
 
