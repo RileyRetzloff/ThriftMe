@@ -107,6 +107,9 @@ def community_post_(community_post_id):
     curr_user = Users.get_by_username(username)
     post = CommunityPost.get_by_id(community_post_id=community_post_id)
 
+    ##owner
+    owner_username =Users.get_username_by_id( post.get_owner_id())
+
     #kick the user out if they are not in the session
     if not (username or user) or username not in session.values():
         return redirect('/')
@@ -170,7 +173,8 @@ def community_post_(community_post_id):
                            likes = like_count,
                            owner = owner_flag,
                            curr_username = curr_username,
-                           liked = like_check)
+                           liked = like_check,
+                           owner_username = owner_username)
 
 
 
