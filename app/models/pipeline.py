@@ -65,7 +65,7 @@ class Users(db.Model):
         usr_instance = Users.query.filter_by(username=username).first()
         return usr_instance 
 
-    def get_username_by_id(user_id):
+    def get_username_by_id(user_id)-> str:
         usr_instance = Users.query.filter_by(user_id=user_id).first()
         if usr_instance:
             return usr_instance.get_username()
@@ -112,6 +112,20 @@ class Listing(db.Model):
             f"user_id: {self.user_id}\n"
             f"album_id: {self.album_id}\n"
         )
+    
+    ##getters for to make life better 
+    def get_by_id(listing_id):
+
+        return Listing.query.filter_by(listing_id=listing_id).first()
+
+    def get_id(self):
+        return self.listing_id
+    
+    def get_owner_id(self):
+        return self.user_id
+    
+    def get_count():
+        return db.session.query(Listing.user_id).count()
 
 
 """
@@ -299,3 +313,57 @@ community_post_likes = db.Table(
    db.Column('user_id',db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True),
    db.Column('community_post_id',db.Integer, db.ForeignKey('community_post.post_id', ondelete='CASCADE'), primary_key=True)
 )
+
+
+
+#function to get the amount of likes
+def get_total_likes_for_community_post(post_id):
+    total_likes = (
+        db.session.query(func.count())
+        .filter(community_post_likes.c.community_post_id == post_id)
+        .scalar()
+    )
+    return total_likes
+
+#----------------------------------------------------------
+
+class ListingComment(db.Model):
+    __tablename__ = 'listing_comments'
+
+    comment_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'))
+    listing_id = db.Column(db.Integer, db.ForeignKey('listings.listing_id', ondelete='CASCADE'))
+    comment_content = db.Column(db.Text)
+    comment_date = db.Column(db.TIMESTAMP, server_default=db.func.current_timestamp())
+
+
+    def __init__(self,user_id, listing_id,comment_content):
+        self.user_id = user_id
+        self.listing_id = listing_id
+        self.comment_content = comment_content
+
+
+    def __str__(self) -> str:
+        return (f"listing_id: {self.listing_id}\n"
+                f"comment_content: {self.comment_content}\n"
+                f"comment_date: {self.comment_date}\n"
+                f"comment owner: {Users.get_username_by_id(self.user_id)}\n")
+            
+
+#--------------------------------------------------------
+listing_likes = db.Table(
+    'listing_likes', 
+   db.Column('user_id',db.Integer, db.ForeignKey('users.user_id', ondelete='CASCADE'), primary_key=True),
+   db.Column('listing_id',db.Integer, db.ForeignKey('listing.post_id', ondelete='CASCADE'), primary_key=True)
+)
+
+
+
+#function to get the amount of likes
+def get_total_likes_for_listing(post_id):
+    total_likes = (
+        db.session.query(func.count())
+        .filter(listing_likes.c.listing_id == post_id)
+        .scalar()
+    )
+    return total_likes
