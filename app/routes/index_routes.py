@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, request, redirect, url_for
+from flask import Blueprint, render_template, request, request, redirect, url_for, session
 from app.models.pipeline import db, Listing
 from flask import abort
 
