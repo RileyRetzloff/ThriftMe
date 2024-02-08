@@ -26,7 +26,7 @@ def render_settings():
     
     print(f"all conditions failed {session.get('userusername')}")
     return render_template('settings.html')
-       
+
 #delete the user account no questions asked
 
 @settings.route('/delete' ,methods =['GET','POST'])

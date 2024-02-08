@@ -20,7 +20,9 @@ sell = Blueprint('sell', __name__)
 
 @sell.route('/sell', methods=["GET", "POST"])
 def create_listing():
-    if not session['username']:
+    # TODO: Fix error when user tries to access Sell page while not logged in. 
+    # Should redirect to Login, but instead just throws an error
+    if session.get('username') is None:
         return redirect('/login')
     username = session['username']
     
